@@ -7,8 +7,8 @@ server:
 spring:
   application:
     name: user-service
-#  profiles:
-#    active: dev
+  profiles:
+    active: dev
   banner:
     location: classpath:banner/banner.txt
 #    image:
