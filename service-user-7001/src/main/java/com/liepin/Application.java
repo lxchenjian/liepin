@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan(basePackages = "com.imooc.mapper")
+@MapperScan(basePackages = "com.liepin.mapper")
 public class Application {
 
     public static void main(String[] args) {
