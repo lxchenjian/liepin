@@ -12,6 +12,7 @@
         <module name="liepin-pojo" />
         <module name="liepin-api" />
         <module name="service-company-6001" />
+        <module name="gateway-8000" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -20,6 +21,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="gateway-8000" options="-parameters" />
       <module name="liepin-api" options="-parameters" />
       <module name="liepin-common" options="-parameters" />
       <module name="liepin-pojo" options="-parameters" />
