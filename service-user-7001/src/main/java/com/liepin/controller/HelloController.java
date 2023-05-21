@@ -5,6 +5,9 @@ import com.liepin.grace.result.IMOOCJSONResult;
 import com.liepin.grace.result.ResponseStatusEnum;
 import com.liepin.pojo.test.Stu;
 import com.liepin.service.StuService;
+import com.liepin.utils.MyInfo;
+import com.liepin.utils.SMSUtils;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,16 @@ public class HelloController {
 
     @Autowired
     private StuService stuService;
+
+    @Autowired
+    private SMSUtils smsUtils;
+    @GetMapping("sms")
+    public Object sms() throws Exception {
+
+        smsUtils.sendSMS(MyInfo.getMobile(), "9875");
+
+        return "Send SMS OK~~~";
+    }
 
     @GetMapping("stu")
     public Object stu() {
