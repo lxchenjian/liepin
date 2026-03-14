@@ -1,5 +1,5 @@
 server:
-  port: ${port:7001}
+  port: ${port:7001} # 多实例集群进行Nacos注册
   tomcat:
     uri-encoding: UTF-8
     max-swallow-size: -1

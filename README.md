@@ -40,16 +40,31 @@ service-company
 
 # 第四周 如何学会大厂微服务基础架构构建？
 单体、分布式、集群、SOA技术架构演变
+
 如何真正认识微服务？
+
 微服务AKF拆分原则
+
 微服务的CAP定理与数据一致性抉择
+
 微服务Netflix与Alibaba的爱恨情仇
+
 Spring Boot&amp;Cloud&amp;Alibaba 版本依赖兼容
+
 微服务注册中心帮你上户口
+
 Docker安装配置Nacos
+
 微服务节点整合Nacos
+
 构建多实例集群进行Nacos注册
+1、添加${port:6001}
+2、VM options - > -DPORT=7002
+
 Nacos写入不同项目的通用配置
+
 微服务网关Gateway与端口规范
+
 构建微服务网关Gateway与负载均衡loadbalancer
+
 本章小节与作业（03:09）
