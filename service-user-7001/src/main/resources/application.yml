@@ -6,11 +6,15 @@ server:
 
 spring:
   application:
-    name: user-service
+    name: user-service # nacos时候配置的
   profiles:
     active: dev
   banner:
     location: classpath:banner/banner.txt
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.10.9:8848
 #    image:
 #      location: banner/cat.png
 

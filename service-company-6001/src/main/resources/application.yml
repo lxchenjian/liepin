@@ -6,6 +6,12 @@ server:
 
 spring:
   application:
-    name: company-service
+    name: company-service # nacos时候配置的
   profiles:
     active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.10.9:8848
+
+

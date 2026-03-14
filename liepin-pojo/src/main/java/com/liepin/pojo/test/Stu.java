@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@ToString
 @AllArgsConstructor
+@ToString
 @NoArgsConstructor
 public class Stu {
 
