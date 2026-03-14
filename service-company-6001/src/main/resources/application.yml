@@ -7,8 +7,8 @@ server:
 spring:
   application:
     name: company-service # nacos时候配置的
-  profiles:
-    active: dev
+#  profiles:
+#    active: dev
   cloud:
     nacos:
       discovery:

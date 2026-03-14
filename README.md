@@ -62,6 +62,7 @@ Docker安装配置Nacos
 2、VM options - > -DPORT=7002
 
 Nacos写入不同项目的通用配置
+${prefix}-${spring.profiles.active}.${file-extension}
 
 微服务网关Gateway与端口规范
 
