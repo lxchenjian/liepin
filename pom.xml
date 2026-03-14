@@ -13,6 +13,7 @@
         <module>liepin-api</module>
         <module>service-user-7001</module>
         <module>service-company-6001</module>
+        <module>gateway-8000</module>
     </modules>
 
 

@@ -12,10 +12,10 @@
         <module name="liepin-pojo" />
         <module name="liepin-api" />
         <module name="service-company-6001" />
+        <module name="gateway-8000" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="gateway-8000" target="1.8" />
       <module name="service-user" target="1.8" />
     </bytecodeTargetLevel>
   </component>
