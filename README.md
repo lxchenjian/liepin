@@ -95,6 +95,8 @@ Postman&ApiPost与Apifox 规范化接口文档与对接
 post请求需要
 
 使用Hibernate-Validate进行参数校验
+参数校验
+异常拦截
 
 用户一键注册登录
 

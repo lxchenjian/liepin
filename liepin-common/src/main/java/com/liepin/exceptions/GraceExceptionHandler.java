@@ -41,6 +41,12 @@ public class GraceExceptionHandler {
         return GraceJSONResult.exception(ResponseStatusEnum.JWT_SIGNATURE_ERROR);
     }
 
+    /**
+     * 参数校验的异常拦截，可以返回多个错误
+     * 这个前端还得做二次处理。
+     * @param e
+     * @return
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public GraceJSONResult returnNotValidException(MethodArgumentNotValidException e) {
