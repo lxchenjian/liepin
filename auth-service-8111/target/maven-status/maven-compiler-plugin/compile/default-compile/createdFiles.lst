@@ -1,0 +1,6 @@
+com/liepin/mapper/UsersMapper.class
+com/liepin/controller/PassportController.class
+com/liepin/controller/AuthController.class
+com/liepin/AuthApplication.class
+com/liepin/service/impl/UsersServiceImpl.class
+com/liepin/service/UsersService.class

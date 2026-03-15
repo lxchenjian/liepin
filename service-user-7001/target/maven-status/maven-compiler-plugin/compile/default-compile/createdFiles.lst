@@ -1,0 +1,5 @@
+com/liepin/service/StuService.class
+com/liepin/service/impl/StuServiceImpl.class
+com/liepin/mapper/StuMapper.class
+com/liepin/UserApplication.class
+com/liepin/controller/HelloController.class

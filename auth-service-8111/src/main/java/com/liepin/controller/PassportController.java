@@ -36,7 +36,7 @@ public class PassportController extends BaseInfoProperties {
 
     @Autowired
     private UsersService usersService;
-    @GetMapping("getSMSCode")
+    @PostMapping("getSMSCode")
     public GraceJSONResult getSMSCode(String mobile,
                                       HttpServletRequest request) throws Exception {
         if (StringUtils.isBlank(mobile)) {

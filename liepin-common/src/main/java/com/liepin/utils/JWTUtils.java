@@ -27,7 +27,7 @@ public class JWTUtils {
     @Autowired
     private JWTProperties jwtProperties;
 
-    @Value("${jwt.key}")
+    @Value("${auth.key}")
     public String JWT_KEY;
 
     public String createJWTWithPrefix(String body, Long expireTimes, String prefix) {

@@ -1,0 +1,32 @@
+{
+  "groups": [
+    {
+      "name": "auth",
+      "type": "com.liepin.utils.JWTProperties",
+      "sourceType": "com.liepin.utils.JWTProperties"
+    },
+    {
+      "name": "tencent.cloud",
+      "type": "com.liepin.utils.TencentCloudProperties",
+      "sourceType": "com.liepin.utils.TencentCloudProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "auth.key",
+      "type": "java.lang.String",
+      "sourceType": "com.liepin.utils.JWTProperties"
+    },
+    {
+      "name": "tencent.cloud.secret-id",
+      "type": "java.lang.String",
+      "sourceType": "com.liepin.utils.TencentCloudProperties"
+    },
+    {
+      "name": "tencent.cloud.secret-key",
+      "type": "java.lang.String",
+      "sourceType": "com.liepin.utils.TencentCloudProperties"
+    }
+  ],
+  "hints": []
+}
