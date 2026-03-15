@@ -79,6 +79,7 @@ public class PassportController extends BaseInfoProperties {
         }
 
         // 3. 保存用户token，分布式会话到redis中
+        // 方式一：存入redis
 //        String uToken = TOKEN_USER_PREFIX + SYMBOL_DOT + UUID.randomUUID().toString();
 //        redis.set(REDIS_USER_TOKEN + ":" + user.getId(), uToken);
         String jwt = jwtUtils.createJWTWithPrefix(new Gson().toJson(user),
@@ -95,4 +96,16 @@ public class PassportController extends BaseInfoProperties {
 
         return GraceJSONResult.ok(usersVO);
     }
+
+    @PostMapping("logout")
+    public GraceJSONResult logout(@RequestParam String userId,
+                                  HttpServletRequest request) throws Exception {
+
+        // 后端只需要清除用户的token信息即可，前端也需要清除相关的用户信息
+//        redis.del(REDIS_USER_TOKEN + ":" + userId);
+
+        return GraceJSONResult.ok();
+    }
+
+
 }
