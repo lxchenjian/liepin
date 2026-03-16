@@ -19,7 +19,7 @@ import java.util.Date;
 
 @Component
 @Slf4j
-@RefreshScope
+@RefreshScope // nacos的动态刷新
 public class JWTUtils {
 
     public static final String at = "@";

@@ -106,32 +106,36 @@ post请求需要
 
 
 第2章 JWT实现用户令牌的签发&状态切换
-视频：2-1 Switchhost 虚拟域名解决ip变动问题（09:31）
+Switchhost 虚拟域名解决ip变动问题
 
-视频：2-2 服务状态与认证方案（17:24）
+服务状态与认证方案
 
-视频：2-3 无状态JWT(Json Web Token)（09:59）
+无状态JWT(Json Web Token)
 
-视频：2-4 签发JWT令牌（11:21）
+签发JWT令牌
 测试类
 
-视频：2-5 校验JWT是否有效（08:22）
+校验JWT是否有效
 测试类
 
-视频：2-6 自定义JWT工具类生成令牌（24:42）
+自定义JWT工具类生成令牌
 一键登录里面的工具类
 
 第3章 基于微服务网关Gateway实现接口访问权限控制
-视频：3-1 Gateway过滤器校验JWT(1) - 路径匹配规则器（17:14）
+Gateway过滤器校验JWT(1) - 路径匹配规则器
 
-视频：3-2 Gateway过滤器校验JWT(2) - 包装自定义错误（13:31）
 
-视频：3-3 Gateway过滤器校验JWT(3) - 校验令牌（20:50）
+Gateway过滤器校验JWT(2) - 包装自定义错误
 
-视频：3-4 Gateway过滤器校验JWT(4) - header组装用户信息传递（13:19）
+Gateway过滤器校验JWT(3) - 校验令牌
 
-视频：3-5 Gateway过滤器校验JWT(5) - ThreadLocal存取用户信息（14:28）
+Gateway过滤器校验JWT(4) - header组装用户信息传递
 
-视频：3-6 作业：RedisToken校验与枚举应用（02:22）
+Gateway过滤器校验JWT(5) - ThreadLocal存取用户信息
+
+RedisToken校验与枚举应用
+Redis token有状态的过滤器拦截校验
+用户类型前缀以及header-json用枚举管理
+
 
 视频：3-7 Nacos共享配置统一管理JWT秘钥最近学习

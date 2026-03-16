@@ -1,5 +1,6 @@
 package com.liepin;
 
+import com.liepin.intercept.JWTCurrentUserInterceptor;
 import com.liepin.intercept.SMSInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,11 @@ public class InterceptorConfig implements WebMvcConfigurer {
         return new SMSInterceptor();
     }
 
+    @Bean
+    public JWTCurrentUserInterceptor jwtCurrentUserInterceptor() {
+        return new JWTCurrentUserInterceptor();
+    }
+
     /**
      * 注册拦截器，并且拦截指定的路由，否则不生效
      * @param registry
@@ -28,5 +34,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(smsInterceptor())
                 .addPathPatterns("/passport/getSMSCode");
+
+        registry.addInterceptor(jwtCurrentUserInterceptor())
+                .addPathPatterns("/**");
     }
 }

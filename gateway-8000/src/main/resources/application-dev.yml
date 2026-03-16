@@ -6,19 +6,11 @@ spring:
     gateway:
       globalcors:
         cors-configurations:
-          '[/**]': # 匹配所有路由
-            allowed-origins:
-              - "http://localhost:8080"  # 你的前端地址，生产环境请替换为真实域名
-            allowed-methods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS  # 务必加上 OPTIONS 方法
-            allowed-headers:
-              - "*"  # 允许所有请求头，或根据需要指定如 "Content-Type", "Authorization"
-            allow-credentials: true  # 如果请求需要携带 Cookie
-            max-age: 3600  # 预检请求的缓存时间，避免频繁发送
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+            allowCredentials: true
       discovery:
         locator:
           enabled: true     # 动态路由，从注册中心根据微服务的名字获得目标节点的地址
