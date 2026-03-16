@@ -24,6 +24,9 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/**
+ * ip限流
+ */
 @Component
 @Slf4j
 public class IPLimitFilter extends BaseInfoProperties implements GlobalFilter, Ordered {

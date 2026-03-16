@@ -5,6 +5,9 @@ import com.liepin.grace.result.ResponseStatusEnum;
 //import io.jsonwebtoken.ExpiredJwtException;
 //import io.jsonwebtoken.MalformedJwtException;
 //import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -28,12 +31,12 @@ public class GraceExceptionHandler {
     }
 
     @ExceptionHandler({
-            SignatureException.class
-//            ,
-//            ExpiredJwtException.class,
-//            UnsupportedJwtException.class,
-//            MalformedJwtException.class,
-//            io.jsonwebtoken.security.SignatureException.class
+            SignatureException.class // 签名异常
+            ,
+            ExpiredJwtException.class, // 过期异常
+            UnsupportedJwtException.class,  // jwt不支持异常
+            MalformedJwtException.class, // 畸形，被篡改
+            io.jsonwebtoken.security.SignatureException.class
     })
     @ResponseBody
     public GraceJSONResult returnSignatureException(SignatureException e) {
