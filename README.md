@@ -141,7 +141,7 @@ Redis token有状态的过滤器拦截校验
 视频：3-7 Nacos共享配置统一管理JWT秘钥最近学习
 
 
-# 第6周 扫码登录与加盐登录实现与AR模式落地
+# 第六周 扫码登录与加盐登录实现与AR模式落地
 第1章 扫描、加盐登录业务的实现与落地
 
 扫码登录流程分析
@@ -194,3 +194,57 @@ AOP计算统计service业务执行时间
 时间计算方式二：片段
 
 视频：2-10 本章小节（06:02）
+
+
+# 第七周 接口重试机制设计与消息队列（重试机制SpringRetry、Spring异步任务、RabbitMQ异步解耦）
+本章概述最近学习
+
+SpringRetry重试机制
+
+Spring异步任务时序图
+
+Spring异步任务发送短信
+
+大白话阐述解耦场景需求
+
+大白话告诉你什么是MQ
+
+MQ选型与应用场景
+
+RabbitMQ工作模型
+
+Docker安装配置RabbitMQ
+
+RabbitMQ管理控制台
+
+RabbitMQ 简单模式构建生产者
+
+RabbitMQ 简单模式构建消费者
+
+RabbitMQ工作模式 - WorkQueues
+
+RabbitMQ工作模式 - 发布订阅
+
+RabbitMQ工作模式 - 路由模式
+
+RabbitMQ工作模式 - 通配符模式
+
+RabbitMQ集成SpringBoot(上) - 异步解耦发送短信
+
+RabbitMQ集成SpringBoot(下) - 监听消费短信发送
+
+jasypt配置文件密码加解密
+
+消息的可靠性投递Confirm机制
+
+消息的可靠性投递Return机制
+
+消费端可靠性ACK机制
+
+RabbitMQ 消费者消息限流
+
+RabbitMQ ttl特性控制短信队列超时
+
+RabbitMQ 死信队列的实现
+
+本章小结
