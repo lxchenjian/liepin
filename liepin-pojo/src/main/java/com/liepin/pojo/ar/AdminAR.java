@@ -1,6 +1,7 @@
-package com.liepin.pojo;
+package com.liepin.pojo.ar;
 
-import net.minidev.json.annotate.JsonIgnore;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -11,9 +12,10 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author 风间影月
- * @since 2022-09-04
+ * @since 2022-10-08
  */
-public class Admin implements Serializable {
+@TableName("admin")
+public class AdminAR extends Model<AdminAR> {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,13 +24,11 @@ public class Admin implements Serializable {
     /**
      * 登录名
      */
-   // @JsonIgnore
     private String username;
 
     /**
      * 密码
      */
-    //@JsonIgnore
     private String password;
 
     /**
@@ -116,8 +116,13 @@ public class Admin implements Serializable {
     }
 
     @Override
+    public Serializable pkVal() {
+        return this.id;
+    }
+
+    @Override
     public String toString() {
-        return "Admin{" +
+        return "AdminAR{" +
         "id=" + id +
         ", username=" + username +
         ", password=" + password +
