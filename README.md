@@ -218,12 +218,16 @@ Docker安装配置RabbitMQ
 RabbitMQ管理控制台
 
 RabbitMQ 简单模式构建生产者
+FooProducer
 
 RabbitMQ 简单模式构建消费者
 
+
 RabbitMQ工作模式 - WorkQueues
+WorkQueuesProducer、WorkQueuesConsumerA、WorkQueuesConsumerB
 
 RabbitMQ工作模式 - 发布订阅
+PubSubProducer、PubSubConsumerA、PubSubConsumerB
 
 RabbitMQ工作模式 - 路由模式
 
@@ -232,8 +236,10 @@ RabbitMQ工作模式 - 通配符模式
 RabbitMQ集成SpringBoot(上) - 异步解耦发送短信
 
 RabbitMQ集成SpringBoot(下) - 监听消费短信发送
+扩展作业：短信适合工作模式
 
 jasypt配置文件密码加解密
+加盐工具类方法重载
 
 消息的可靠性投递Confirm机制
 

@@ -1,2 +1,8 @@
-com/liepin/intercept/SMSInterceptor.class
+com/liepin/retry/RetryComponent.class
+com/liepin/task/SMSTask.class
+com/liepin/mq/RabbitMQSMSConfig.class
+com/liepin/mq/RabbitMQSMSConfig_Dead.class
+com/liepin/ServiceLogAspect.class
 com/liepin/InterceptorConfig.class
+com/liepin/intercept/SMSInterceptor.class
+com/liepin/intercept/JWTCurrentUserInterceptor.class

@@ -7,9 +7,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="server-resource-4001" />
         <module name="liepin-common" />
         <module name="liepin-pojo" />
         <module name="liepin-api" />
+        <module name="rabbit-consumer" />
+        <module name="rabbit-producer" />
         <module name="service-company-6001" />
         <module name="auth-service-8111" />
         <module name="service-user-7001" />
@@ -28,6 +31,9 @@
       <module name="liepin-api" options="-parameters" />
       <module name="liepin-common" options="-parameters" />
       <module name="liepin-pojo" options="-parameters" />
+      <module name="rabbit-consumer" options="-parameters" />
+      <module name="rabbit-producer" options="-parameters" />
+      <module name="server-resource-4001" options="-parameters" />
       <module name="service-company-6001" options="-parameters" />
       <module name="service-user-7001" options="-parameters" />
     </option>

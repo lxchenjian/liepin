@@ -1,6 +1,11 @@
 com/liepin/mapper/UsersMapper.class
 com/liepin/controller/PassportController.class
-com/liepin/controller/AuthController.class
-com/liepin/AuthApplication.class
+com/liepin/mapper/AdminMapper.class
 com/liepin/service/impl/UsersServiceImpl.class
+com/liepin/controller/AdminController.class
+com/liepin/controller/AuthController.class
+com/liepin/service/impl/AdminServiceImpl.class
+com/liepin/service/AdminService.class
+com/liepin/AuthApplication.class
+com/liepin/controller/SaasPassportController.class
 com/liepin/service/UsersService.class

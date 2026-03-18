@@ -1,5 +1,10 @@
 com/liepin/service/StuService.class
+com/liepin/controller/AdminInfoController.class
 com/liepin/service/impl/StuServiceImpl.class
+com/liepin/mapper/AdminMapperAR.class
+com/liepin/mapper/AdminMapper.class
 com/liepin/mapper/StuMapper.class
 com/liepin/UserApplication.class
 com/liepin/controller/HelloController.class
+com/liepin/service/impl/AdminServiceImpl.class
+com/liepin/service/AdminService.class

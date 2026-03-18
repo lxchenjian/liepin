@@ -1,44 +1,63 @@
 package com.liepin.controller;
 
-import com.alibaba.cloud.commons.lang.StringUtils;
 import com.google.gson.Gson;
+import com.liepin.mq.RabbitMQSMSConfig;
+import com.liepin.task.SMSTask;
 import com.liepin.base.BaseInfoProperties;
 import com.liepin.grace.result.GraceJSONResult;
 import com.liepin.grace.result.ResponseStatusEnum;
 import com.liepin.pojo.Users;
 import com.liepin.pojo.bo.RegistLoginBO;
+import com.liepin.pojo.mq.SMSContentQO;
 import com.liepin.pojo.vo.UsersVO;
 import com.liepin.service.UsersService;
+import com.liepin.utils.GsonUtils;
 import com.liepin.utils.IPUtil;
 import com.liepin.utils.JWTUtils;
+import com.liepin.utils.SMSUtils;
+
+import com.rabbitmq.client.MessageProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
+import org.springframework.amqp.core.ReturnedMessage;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-/**
- * @className: PassPortController
- * @Description: TODO
- * @version: v1.0.0
- * @author: GONGWENXUE
- * @date: 2026/3/14 15:36
- */
+import java.util.UUID;
 
 @RestController
 @RequestMapping("passport")
 @Slf4j
 public class PassportController extends BaseInfoProperties {
+
+    @Autowired
+    private SMSUtils smsUtils;
+
     @Autowired
     private JWTUtils jwtUtils;
 
     @Autowired
+    private SMSTask smsTask;
+
+    @Autowired
     private UsersService usersService;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     @PostMapping("getSMSCode")
     public GraceJSONResult getSMSCode(String mobile,
                                       HttpServletRequest request) throws Exception {
+
         if (StringUtils.isBlank(mobile)) {
             return GraceJSONResult.error();
         }
@@ -49,7 +68,93 @@ public class PassportController extends BaseInfoProperties {
         redis.setnx60s(MOBILE_SMSCODE + ":" + userIp, mobile);
 
         String code = (int)((Math.random() * 9 + 1) * 100000) + "";
-//        smsUtils.sendSMS(mobile, code);   先不发送
+//        smsUtils.sendSMS(mobile, code);
+//        RetryComponent.
+
+        // 使用消息队列异步解耦发送短信
+        SMSContentQO contentQO = new SMSContentQO();
+        contentQO.setMobile(mobile);
+        contentQO.setContent(code);
+
+        // RabbitMQ集成SpringBoot(上) - 异步解耦发送短信
+//        rabbitTemplate.convertAndSend(RabbitMQSMSConfig.SMS_EXCHANGE,
+//                RabbitMQSMSConfig.ROUTING_KEY_SMS_SEND_LOGIN,
+//                GsonUtils.object2String(contentQO));
+
+//        // 定义confirm回调/消息的可靠性投递Confirm机制
+//        rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
+//            /**
+//             * 回调函数
+//             * @param correlationData 相关性数据
+//             * @param ack 交换机是否成功接收到消息，true：成功
+//             * @param cause 失败的原因
+//             */
+//            @Override
+//            public void confirm(CorrelationData correlationData,
+//                                boolean ack,
+//                                String cause) {
+//                log.info("进入confirm");
+//                log.info("correlationData：{}", correlationData.getId());
+//                if (ack) {
+//                    log.info("交换机成功接收到消息~~ {}", cause);
+//                } else {
+//                    // 如何测试，把交换机改为不存在的
+//                    log.info("交换机接收消息失败~~失败原因： {}", cause);
+//                }
+//            }
+//        });
+
+        // 定义return回调
+//        rabbitTemplate.setReturnsCallback(new RabbitTemplate.ReturnsCallback() {
+//            @Override
+//            public void returnedMessage(ReturnedMessage returned) {
+                // message 消息数据
+                // replyCode 错误的码
+                // replyText 错误信息
+                // exchange 交换机
+                // routingKey 路由key
+                // 如何测试？ 修改路由key
+//                log.info("进入return");
+//                log.info(returned.toString());
+//            }
+//        });
+
+        //
+//        rabbitTemplate.convertAndSend(RabbitMQSMSConfig.SMS_EXCHANGE,
+//        RabbitMQSMSConfig.ROUTING_KEY_SMS_SEND_LOGIN,
+//        GsonUtils.object2String(contentQO),
+//        new CorrelationData(UUID.randomUUID().toString()));
+
+
+
+//        for (int i = 0 ; i < 10 ; i ++) {
+//            rabbitTemplate.convertAndSend(RabbitMQSMSConfig.SMS_EXCHANGE,
+//                    RabbitMQSMSConfig.ROUTING_KEY_SMS_SEND_LOGIN,
+//                    GsonUtils.object2String(contentQO),
+//                    new CorrelationData(UUID.randomUUID().toString()));
+//        }
+
+        // 消息属性处理的类对象（对当前需要的超时ttl进行参数属性的设置）ttl消息设置方式一
+//        MessagePostProcessor processor = new MessagePostProcessor() {
+//            @Override
+//            public Message postProcessMessage(Message message) throws AmqpException {
+//                message.getMessageProperties()
+//                        .setExpiration(String.valueOf(10*1000));
+//                return message;
+//            }
+//        };
+        //ttl消息设置方式二
+//        rabbitTemplate.convertAndSend(RabbitMQSMSConfig.SMS_EXCHANGE,
+//                RabbitMQSMSConfig.ROUTING_KEY_SMS_SEND_LOGIN,
+//                GsonUtils.object2String(contentQO),
+//                message -> {
+//                    message.getMessageProperties()
+//                        .setExpiration(String.valueOf(30*1000));
+//                    return message;
+//                },
+//                new CorrelationData(UUID.randomUUID().toString()));
+
+//        smsTask.sendSMSTask();
         log.info("验证码为：{}", code);
 
         // 把验证码存入到redis，用于后续的注册登录进行校验
@@ -79,7 +184,6 @@ public class PassportController extends BaseInfoProperties {
         }
 
         // 3. 保存用户token，分布式会话到redis中
-        // 方式一：存入redis
 //        String uToken = TOKEN_USER_PREFIX + SYMBOL_DOT + UUID.randomUUID().toString();
 //        redis.set(REDIS_USER_TOKEN + ":" + user.getId(), uToken);
         String jwt = jwtUtils.createJWTWithPrefix(new Gson().toJson(user),
@@ -106,6 +210,4 @@ public class PassportController extends BaseInfoProperties {
 
         return GraceJSONResult.ok();
     }
-
-
 }
