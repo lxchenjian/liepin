@@ -9,6 +9,7 @@ service-user: 用户微服务（7001）
 
 service-company: 企业微服务（6001）
 
+阶段一：项目基础框架与微服务构建
 
 # 第三周 后端微服务基础架构与前端项目联调配备
 1、项目层次与Maven聚合工程搭建
@@ -69,6 +70,8 @@ ${prefix}-${spring.profiles.active}.${file-extension}
 构建微服务网关Gateway与负载均衡loadbalancer
 
 本章小节与作业（03:09）
+
+阶段二：微服务与分布式架构设计与功能开发
 
 # 第五周 云短信注册登录全流程落地与JWT实现
 第1章 云短信注册登录全流程落地
@@ -287,3 +290,25 @@ Seata 客户端全局事务配置与实现最近学习
 最终一致性落地（4）-确认并删除本地消息
 初始化简历的最佳方案
 本章小节
+
+# 第九周 基于MinIO与OSS实现分布式与云存储
+第1章 基于MinIO与OSS实现分布式与云存储
+本周概述
+用户信息修改
+MybatisPlus 数据库字段更新策略
+构建文件服务排除自动装配
+SpringBoot 文件上传
+SpringBoot 静态资源映射
+统一限制文件上传大小
+分布式文件存储方案的架构演变
+分布式存储技术选型
+Docker安装配置 MinIO
+MinIO在Java客户端文件上传
+SpringBoot集成MinIO文件上传
+阿里云OSS - 掀起你的盖头来
+阿里云OSS-配置bucket与秘钥
+阿里云OSS-集成SpringBoot上传
+admin-查询账号信息
+admin-Base64上传头像
+admin-更新账号信息
+本章小结与作业

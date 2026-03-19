@@ -4,6 +4,7 @@ com/liepin/pojo/Orders.class
 com/liepin/pojo/Admin.class
 com/liepin/pojo/Job.class
 com/liepin/pojo/Users.class
+com/liepin/pojo/bo/ModifyUserBO.class
 com/liepin/pojo/Interview.class
 com/liepin/pojo/SysParams.class
 com/liepin/pojo/ResumeWorkExp.class
@@ -15,10 +16,14 @@ com/liepin/pojo/Resume.class
 com/liepin/pojo/vo/UsersVO.class
 com/liepin/pojo/JobType.class
 com/liepin/pojo/bo/CreateAdminBO.class
+com/liepin/pojo/bo/UpdateAdminBO.class
 com/liepin/pojo/test/Stu.class
 com/liepin/pojo/mq/SMSContentQO.class
 com/liepin/pojo/Article.class
+com/liepin/pojo/vo/CompanySimpleVO.class
+com/liepin/pojo/bo/Base64FileBO.class
 com/liepin/pojo/ChatMessage.class
+com/liepin/pojo/vo/AdminInfoVO.class
 com/liepin/pojo/vo/SaasUserVO.class
 com/liepin/pojo/vo/AdminVO.class
 com/liepin/pojo/ResumeExpect.class

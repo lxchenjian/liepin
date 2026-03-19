@@ -28,4 +28,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: assign_id
+        # assign_id 是 MyBatis-Plus 提供的主键类型，基于雪花算法（Snowflake）生成分布式唯一 ID
+        # @TableId(type = IdType.ASSIGN_ID)
+      update-strategy: not_empty # 字符串为"" 不修改
     banner: false
