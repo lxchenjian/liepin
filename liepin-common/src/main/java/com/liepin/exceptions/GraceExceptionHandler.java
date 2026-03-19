@@ -20,9 +20,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * 全局异常捕获是为了让 前端页面展示，微服务之间调用不需要异常捕获
+ */
 @ControllerAdvice
 public class GraceExceptionHandler {
 
+    // 测试全局异常是否能促发seata回滚
+//    @ExceptionHandler(ArithmeticException.class)
+//    @ResponseBody
+//    public GraceJSONResult returnArithmeticException(ArithmeticException e) {
+//        e.printStackTrace();
+//        return GraceJSONResult.errorMsg(e.getMessage());
+//    }
     @ExceptionHandler(MyCustomException.class)
     @ResponseBody
     public GraceJSONResult returnMyCustomException(MyCustomException e) {

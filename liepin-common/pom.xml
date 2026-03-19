@@ -58,7 +58,14 @@
 <!--        <artifactId>spring-cloud-starter-bootstrap</artifactId>-->
 <!--        </dependency>-->
 
-        <!-- 引入客户端负载均衡器 loadbalancer  不添加会有503报错-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <!-- Ribbon 弃用 -->
+        <!-- 引入客户端负载均衡器 loadbalancer SpringCloud官方 不添加会有503报错 -->
+        <!-- 扩展：可以引入nacos负载均衡-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>

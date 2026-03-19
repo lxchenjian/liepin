@@ -27,3 +27,22 @@ spring:
     password: admin
     publisher-confirm-type: correlated
     publisher-returns: true
+# 1.5版本
+seata:
+  enabled: true
+  tx-service-group: liepin_tx_group # 名称
+  service:
+    vgroup-mapping:
+      liepin_tx_group: SEATA_GROUP
+    grouplist:
+      SEATA_GROUP: 192.168.10.9:8091
+  config:
+    nacos:
+      server-addr: 192.168.10.9:8848
+      username: nacos
+      password: nacos
+  registry:
+    nacos:
+      server-addr: 192.168.10.9:8848
+      username: nacos
+      password: nacos

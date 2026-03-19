@@ -1,6 +1,6 @@
 package com.liepin.pojo;
 
-import net.minidev.json.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -22,18 +22,18 @@ public class Admin implements Serializable {
     /**
      * 登录名
      */
-   // @JsonIgnore
     private String username;
 
     /**
      * 密码
      */
-    //@JsonIgnore
+    @JsonIgnore
     private String password;
 
     /**
      * 用户混合加密的盐
      */
+    @JsonIgnore
     private String slat;
 
     /**

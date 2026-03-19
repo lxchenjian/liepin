@@ -3,8 +3,13 @@ com/liepin/controller/PassportController.class
 com/liepin/mapper/AdminMapper.class
 com/liepin/service/impl/UsersServiceImpl.class
 com/liepin/controller/AdminController.class
+com/liepin/service/impl/MqLocalMsgRecordServiceImpl.class
+com/liepin/MyTransactionManager.class
 com/liepin/controller/AuthController.class
+com/liepin/mq/InitResumeMQProducerHandler.class
+com/liepin/mapper/MqLocalMsgRecordMapper.class
 com/liepin/service/impl/AdminServiceImpl.class
+com/liepin/service/MqLocalMsgRecordService.class
 com/liepin/service/AdminService.class
 com/liepin/AuthApplication.class
 com/liepin/controller/SaasPassportController.class

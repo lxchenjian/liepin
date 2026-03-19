@@ -14,3 +14,13 @@ spring:
       pool-name: DataSourceHikariCP           # 连接池的名字
       max-lifetime: 18000000                  # 连接池的最大生命时长（毫秒），超时则会被释放（retired）
       connection-test-query: SELECT 1
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.10.9:8848
+    loadbalancer:
+      nacos:
+        enabled: true   # 开启基于nacos规则的负载均衡
+
+#        IRule
+#        return new NacosRule(); 老版本

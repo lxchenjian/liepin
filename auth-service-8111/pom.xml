@@ -16,5 +16,12 @@
             <artifactId>liepin-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <!-- 必须添加，上面的seata会用老版本的 -->
+        <dependency>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-spring-boot-starter</artifactId>
+            <version>1.5.2</version>
+        </dependency>
     </dependencies>
 </project>

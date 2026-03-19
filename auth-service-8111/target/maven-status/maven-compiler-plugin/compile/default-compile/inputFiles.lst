@@ -1,11 +1,16 @@
-/Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/service/impl/AdminServiceImpl.java
+/Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/service/MqLocalMsgRecordService.java
 /Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/service/UsersService.java
 /Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/controller/AuthController.java
+/Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/mapper/MqLocalMsgRecordMapper.java
 /Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/controller/PassportController.java
 /Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/service/impl/UsersServiceImpl.java
 /Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/mapper/UsersMapper.java
 /Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/controller/SaasPassportController.java
 /Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/AuthApplication.java
 /Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/controller/AdminController.java
+/Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/service/impl/AdminServiceImpl.java
+/Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/MyTransactionManager.java
 /Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/service/AdminService.java
+/Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/mq/InitResumeMQProducerHandler.java
+/Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/service/impl/MqLocalMsgRecordServiceImpl.java
 /Users/xingma/Desktop/project/newest_front/liepin/auth-service-8111/src/main/java/com/liepin/mapper/AdminMapper.java

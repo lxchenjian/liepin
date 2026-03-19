@@ -27,3 +27,4 @@ com/liepin/pojo/DataDictionary.class
 com/liepin/pojo/ar/AdminAR.class
 com/liepin/pojo/Industry.class
 com/liepin/pojo/bo/RegistLoginBO.class
+com/liepin/pojo/MqLocalMsgRecord.class

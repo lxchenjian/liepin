@@ -26,4 +26,12 @@ public interface UsersService extends IService<Users> {
      * @return
      */
     public Users createUsers(String mobile);
+
+    /**
+     * 消息的一致性
+     * @param mobile
+     * @return
+     */
+    public Users createUsersAndInitResumeMQ(String mobile);
+
 }

@@ -30,6 +30,10 @@ spring:
           uri: lb://resource-service
           predicates:
             - Path=/r/**
+        - id: workRoute
+          uri: lb://work-service
+          predicates:
+            - Path=/w/**,/resume/**
       globalcors:
         cors-configurations:
           '[/**]':
@@ -37,3 +41,6 @@ spring:
             allowedHeaders: "*"
             allowedMethods: "*"
             allowCredentials: true
+    loadbalancer:
+      nacos:
+        enabled: true   # 开启基于nacos规则的负载均衡(1、nacos页面修改权重) 写在调用方
