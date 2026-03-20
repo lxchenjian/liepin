@@ -11,6 +11,7 @@
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-common/src/main/java/com/liepin/grace/result/IMOOCJSONResult.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-common/src/main/java/com/liepin/utils/RedisOperator.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-common/src/main/java/com/liepin/grace/result/GraceJSONResult.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-common/src/main/java/com/liepin/utils/Base64ToFile.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-common/src/main/java/com/liepin/utils/GsonUtils.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-common/src/main/java/com/liepin/utils/TencentCloudProperties.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-common/src/main/java/com/liepin/exceptions/GraceException.java

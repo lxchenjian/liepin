@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+
 @Component
 @Data
 @PropertySource("classpath:excludeUrlPath.properties")
@@ -15,4 +16,6 @@ public class ExcludeUrlProperties {
     private List<String> urls;
 
     private List<String> ipLimitUrls;
+
+    private String fileStart;
 }

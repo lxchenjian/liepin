@@ -16,6 +16,7 @@
         <module name="rabbit-producer" />
         <module name="service-company-6001" />
         <module name="auth-service-8111" />
+        <module name="service-file-5001" />
         <module name="service-user-7001" />
         <module name="gateway-8000" />
       </profile>
@@ -37,6 +38,7 @@
       <module name="rabbit-producer" options="-parameters" />
       <module name="server-resource-4001" options="-parameters" />
       <module name="service-company-6001" options="-parameters" />
+      <module name="service-file-5001" options="-parameters" />
       <module name="service-user-7001" options="-parameters" />
       <module name="service-work-3001" options="-parameters" />
     </option>

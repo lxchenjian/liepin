@@ -15,6 +15,7 @@ META-INF/spring-configuration-metadata.json
 com/liepin/utils/TencentCloudProperties.class
 com/liepin/utils/GsonUtils$1.class
 com/liepin/base/BaseInfoProperties.class
+com/liepin/utils/Base64ToFile.class
 com/liepin/grace/result/IMOOCJSONResult.class
 com/liepin/enums/UserRole.class
 com/liepin/exceptions/GraceExceptionHandler.class

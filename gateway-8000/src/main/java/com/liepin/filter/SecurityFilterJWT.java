@@ -63,6 +63,16 @@ public class SecurityFilterJWT extends BaseInfoProperties implements GlobalFilte
             }
         }
 
+        String fileStart = excludeUrlProperties.getFileStart();
+        if (StringUtils.isNotBlank(fileStart)) {
+            boolean matchStartFiles = antPathMatcher.matchStart(fileStart, url);
+            if (matchStartFiles) {
+                // 如果匹配到，则直接放行
+                return chain.filter(exchange);
+            }
+        }
+
+
         // 针对指定的url，对ip进行判断拦截，限制访问次数
 
 

@@ -1,0 +1,7 @@
+com/liepin/MinIOUtils.class
+com/liepin/OSSUtils.class
+com/liepin/OSSConfig.class
+com/liepin/FileApplication.class
+com/liepin/MinIOConfig.class
+com/liepin/StaticResourceConfig.class
+com/liepin/controller/FileController.class

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "tencent.cloud")
 public class TencentCloudProperties {
 
-    private String SecretId; // 短信修改一
-    private String SecretKey; // 短信修改二
+    private String SecretId;
+    private String SecretKey;
 
 }

@@ -19,8 +19,8 @@ public class SMSUtilsRetry {
             }
             case 1: {
                 // 1为正常返回数据
-                throw new IllegalArgumentException("参数有误，不能为0");
-                //return true;
+//                throw new IllegalArgumentException("参数有误，不能为0");
+                return true;
             }
             case 2: {
                 // 模拟数组异常
@@ -29,8 +29,8 @@ public class SMSUtilsRetry {
             case 3: {
                 // 调用正常但是第三方返回的参数不对，针对false则需要自行处理
                 // 第三方sdk一般都会返回不同的状态码，对照状态码列表可以自行做额外的处理
-                throw new ArrayIndexOutOfBoundsException("数据越界...");
-               // return false;
+//                throw new ArrayIndexOutOfBoundsException("数据越界...");
+                return false;
             }
         }
 

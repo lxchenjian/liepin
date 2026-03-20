@@ -8,6 +8,7 @@ import com.liepin.grace.result.ResponseStatusEnum;
 import com.liepin.mapper.AdminMapper;
 import com.liepin.pojo.Admin;
 import com.liepin.pojo.bo.CreateAdminBO;
+import com.liepin.pojo.bo.UpdateAdminBO;
 import com.liepin.service.AdminService;
 import com.liepin.utils.MD5Utils;
 import com.liepin.utils.PagedGridResult;
@@ -91,5 +92,19 @@ public class AdminServiceImpl extends BaseInfoProperties implements AdminService
                         .eq("username", username)
         );
         return admin;
+    }
+
+    @Override
+    public Admin getById(String adminId) {
+        return adminMapper.selectById(adminId);
+    }
+
+    @Transactional
+    @Override
+    public void updateAdmin(UpdateAdminBO adminBO) {
+        Admin admin = new Admin();
+        BeanUtils.copyProperties(adminBO, admin);
+        admin.setUpdatedTime(LocalDateTime.now());
+        adminMapper.updateById(admin);
     }
 }

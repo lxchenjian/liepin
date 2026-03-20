@@ -1,6 +1,8 @@
 package com.liepin.service;
 
+import com.liepin.pojo.Admin;
 import com.liepin.pojo.bo.CreateAdminBO;
+import com.liepin.pojo.bo.UpdateAdminBO;
 import com.liepin.utils.PagedGridResult;
 
 /**
@@ -35,4 +37,17 @@ public interface AdminService {
      * @param username
      */
     public void deleteAdmin(String username);
+
+    /**
+     * 查询admin信息
+     * @param adminId
+     * @return
+     */
+    public Admin getById(String adminId);
+
+    /**
+     * 更新admin信息
+     * @param adminBO
+     */
+    public void updateAdmin(UpdateAdminBO adminBO);
 }

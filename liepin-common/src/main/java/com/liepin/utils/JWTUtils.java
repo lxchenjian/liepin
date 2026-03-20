@@ -19,7 +19,7 @@ import java.util.Date;
 
 @Component
 @Slf4j
-@RefreshScope // nacos的动态刷新
+@RefreshScope
 public class JWTUtils {
 
     public static final String at = "@";
@@ -52,12 +52,6 @@ public class JWTUtils {
         return dealJWT(body, expireTimes);
     }
 
-    /**
-     * 处理jwt
-     * @param body
-     * @param expireTimes
-     * @return
-     */
     public String dealJWT(String body, Long expireTimes) {
 
 //        String userKey = jwtProperties.getKey();
@@ -81,13 +75,6 @@ public class JWTUtils {
         return jwt;
     }
 
-    /**
-     * 每次生成的结果不一样的
-     * 需要相同的话，添加.setId("fixed-id-123")  固定id
-     * @param body
-     * @param secretKey
-     * @return
-     */
     public String generatorJWT(String body, SecretKey secretKey) {
         String jwtToken = Jwts.builder()
                 .setSubject(body)

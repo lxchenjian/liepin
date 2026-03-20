@@ -2,11 +2,16 @@ package com.liepin.controller;
 
 import com.liepin.base.BaseInfoProperties;
 import com.liepin.grace.result.GraceJSONResult;
+import com.liepin.intercept.JWTCurrentUserInterceptor;
+import com.liepin.pojo.Admin;
 import com.liepin.pojo.bo.CreateAdminBO;
 import com.liepin.pojo.bo.ResetPwdBO;
+import com.liepin.pojo.bo.UpdateAdminBO;
+import com.liepin.pojo.vo.AdminInfoVO;
 import com.liepin.service.AdminService;
 import com.liepin.utils.PagedGridResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,5 +64,30 @@ public class AdminInfoController extends BaseInfoProperties {
         resetPwdBO.modifyPwd();
         return GraceJSONResult.ok();
     }
+
+    @PostMapping("myInfo")
+    public GraceJSONResult myInfo() {
+
+        Admin admin = JWTCurrentUserInterceptor.adminUser.get();
+
+        Admin adminInfo = adminService.getById(admin.getId());
+
+        AdminInfoVO adminInfoVO = new AdminInfoVO();
+        BeanUtils.copyProperties(adminInfo, adminInfoVO);
+
+        return GraceJSONResult.ok(adminInfoVO);
+    }
+
+    @PostMapping("updateMyInfo")
+    public GraceJSONResult updateMyInfo(@RequestBody @Valid UpdateAdminBO adminBO) {
+        Admin admin = JWTCurrentUserInterceptor.adminUser.get();
+
+        adminBO.setId(admin.getId());
+        adminService.updateAdmin(adminBO);
+
+        return GraceJSONResult.ok();
+    }
+
+
 
 }
