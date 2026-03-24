@@ -100,7 +100,7 @@ public class FileController {
         // 获得文件原始名称
         String filename = file.getOriginalFilename();
 
-        filename = userId + File.separator + filename;
+        filename = userId + File.separator + dealFilename(filename);
         String imageUrl = OSSUtils.uploadFile(file, filename);
 
         return GraceJSONResult.ok(imageUrl);
@@ -135,6 +135,12 @@ public class FileController {
         return GraceJSONResult.ok(imageUrl);
     }
 
+    /**
+     * 上传企业logo
+     * @param file
+     * @return
+     * @throws Exception
+     */
     @PostMapping("uploadLogo")
     public GraceJSONResult uploadLogo(@RequestParam("file") MultipartFile file) throws Exception {
 
@@ -144,7 +150,7 @@ public class FileController {
             return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_NULL_ERROR);
         }
 
-        filename = "company/logo/" + filename;
+        filename = "company/logo/" + dealFilename(filename);
         MinIOUtils.uploadFile(minIOConfig.getBucketName(), filename, file.getInputStream());
 
         String imageUrl = MinIOUtils.uploadFile(minIOConfig.getBucketName(),
@@ -154,6 +160,12 @@ public class FileController {
         return GraceJSONResult.ok(imageUrl);
     }
 
+    /**
+     * 上传营业职照
+     * @param file
+     * @return
+     * @throws Exception
+     */
     @PostMapping("uploadBizLicense")
     public GraceJSONResult uploadBizLicense(@RequestParam("file") MultipartFile file) throws Exception {
 
@@ -163,11 +175,36 @@ public class FileController {
             return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_NULL_ERROR);
         }
 
-        filename = "company/bizLicense/" + filename;
+        filename = "company/bizLicense/" + dealFilename(filename);
         String imageUrl = MinIOUtils.uploadFile(minIOConfig.getBucketName(),
                                                 filename,
                                                 file.getInputStream(),
                                                 true);
         return GraceJSONResult.ok(imageUrl);
+    }
+
+
+    @PostMapping("uploadAuthLetter")
+    public GraceJSONResult uploadAuthLetter(@RequestParam("file") MultipartFile file) throws Exception {
+
+        // 获得文件原始名称
+        String filename = file.getOriginalFilename();
+        if (StringUtils.isBlank(filename)) {
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_NULL_ERROR);
+        }
+
+        filename = "company/AuthLetter/" + dealFilename(filename);
+        String imageUrl = MinIOUtils.uploadFile(minIOConfig.getBucketName(),
+                filename,
+                file.getInputStream(),
+                true);
+        return GraceJSONResult.ok(imageUrl);
+    }
+
+    private String dealFilename(String filename) {
+        String suffixName = filename.substring(filename.lastIndexOf("."));
+        String fName = filename.substring(0, filename.lastIndexOf("."));
+        String uuid = UUID.randomUUID().toString();
+        return fName + "-" + uuid + suffixName;
     }
 }

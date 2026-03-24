@@ -23,5 +23,12 @@
             <artifactId>liepin-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <!-- 必须添加， 默认的1.4版本的有序列化问题，和springboot序列化不一致 -->
+        <dependency>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-spring-boot-starter</artifactId>
+            <version>1.5.2</version>
+        </dependency>
     </dependencies>
 </project>

@@ -1,11 +1,13 @@
-/Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/ServiceLogAspect.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/feign/WorkMicroServiceFeign.java
-/Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/mq/RabbitMQSMSConfig_Dead.java
-/Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/SeataTransactionAspect.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/mq/DelayConfig_Industry.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/task/SMSTask.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/retry/RetryComponent.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/feign/UserInfoMicroServiceFeign.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/InterceptorConfig.java
-/Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/mq/InitResumeMQConfig.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/intercept/SMSInterceptor.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/intercept/JWTCurrentUserInterceptor.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/ServiceLogAspect.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/mq/RabbitMQSMSConfig_Dead.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/SeataTransactionAspect.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/mq/InitResumeMQConfig.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-api/src/main/java/com/liepin/mq/RabbitMQSMSConfig.java

@@ -1,2 +1,6 @@
 com/liepin/controller/HelloController.class
+com/liepin/service/impl/CompanyServiceImpl.class
+com/liepin/controller/CompanyController.class
 com/liepin/CompanyApplication.class
+com/liepin/mapper/CompanyMapper.class
+com/liepin/service/CompanyService.class

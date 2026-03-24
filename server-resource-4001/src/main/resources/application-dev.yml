@@ -18,6 +18,11 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.10.9:8848
+  redis:
+    host: 192.168.10.9
+    port: 6379
+    database: 0
+    password: 123456
   rabbitmq:
     host: 192.168.10.9
     port: 5672
@@ -33,3 +38,34 @@ jasypt:
   encryptor:
     algorithm: PBEWithMD5AndDES
     password: fengjianyingyue
+
+seata:
+  enabled: true
+  tx-service-group: imooc_tx_group
+  service:
+    vgroup-mapping:
+      imooc_tx_group: SEATA_GROUP
+    grouplist:
+      SEATA_GROUP: 192.168.10.9:8091
+  config:
+    nacos:
+      server-addr: 192.168.10.9:8848
+      username: nacos
+      password: nacos
+  registry:
+    nacos:
+      server-addr: 192.168.10.9:8848
+      username: nacos
+      password: nacos
+
+canal:
+  destination: imooc
+  server: 192.168.10.9:11111
+  user-name: canal
+  password: canal
+
+# 禁止canal的日志
+# 消息中如果有null，是因为实体类的字段名称和数据库不匹配
+logging:
+  level:
+    top.javatool.canal.client: warn

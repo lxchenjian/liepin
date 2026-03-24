@@ -472,7 +472,7 @@ INSERT INTO `company_photo` VALUES ('1560274281974820865', 'http://hire.t.mukewa
 COMMIT;
 
 -- ----------------------------
--- Table structure for data_dictionary
+-- Table structure for data_dictionary  数据字典
 -- ----------------------------
 DROP TABLE IF EXISTS `data_dictionary`;
 CREATE TABLE `data_dictionary` (
@@ -1836,7 +1836,7 @@ INSERT INTO `resume_project_exp` VALUES ('1560476621847769090', '156028975797092
 COMMIT;
 
 -- ----------------------------
--- Table structure for resume_work_exp
+-- Table structure for resume_work_exp 行业树形图
 -- ----------------------------
 DROP TABLE IF EXISTS `resume_work_exp`;
 CREATE TABLE `resume_work_exp` (

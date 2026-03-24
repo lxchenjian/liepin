@@ -14,3 +14,32 @@ spring:
       pool-name: DataSourceHikariCP           # 连接池的名字
       max-lifetime: 18000000                  # 连接池的最大生命时长（毫秒），超时则会被释放（retired）
       connection-test-query: SELECT 1
+  redis:
+    host: 192.168.10.9
+    port: 6379
+    database: 0
+    password: imooc
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.10.9:8848
+
+seata:
+  enabled: true
+  tx-service-group: imooc_tx_group
+  service:
+    vgroup-mapping:
+      imooc_tx_group: SEATA_GROUP
+    grouplist:
+      SEATA_GROUP: 192.168.10.9:8091
+  config:
+    nacos:
+      server-addr: 192.168.10.9:8848
+      username: nacos
+      password: nacos
+  registry:
+    nacos:
+      server-addr: 192.168.10.9:8848
+      username: nacos
+      password: nacos
+

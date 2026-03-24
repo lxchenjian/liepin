@@ -1,3 +1,4 @@
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/CreateCompanyBO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/Job.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/Admin.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/DataDictionary.java
@@ -13,6 +14,7 @@
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/Users.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/vo/AdminVO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/ResumeWorkExp.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/DataDictionaryBO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/UpdateAdminBO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/vo/CompanySimpleVO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/test/Stu.java
@@ -22,7 +24,9 @@
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/JobType.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/vo/AdminInfoVO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/SysParams.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/vo/TopIndustryWithThirdListVO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/ResumeProjectExp.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/co/DataDictionaryCO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/Article.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/ResetPwdBO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/Industry.java
@@ -33,3 +37,4 @@
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/ar/AdminAR.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/RegistLoginBO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/Company.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/ReviewCompanyBO.java

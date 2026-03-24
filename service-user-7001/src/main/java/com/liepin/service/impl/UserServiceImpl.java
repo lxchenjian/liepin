@@ -1,5 +1,6 @@
 package com.liepin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.liepin.base.BaseInfoProperties;
 import com.liepin.exceptions.GraceException;
 import com.liepin.grace.result.ResponseStatusEnum;
@@ -41,5 +42,31 @@ public class UserServiceImpl extends BaseInfoProperties implements UserService {
     @Override
     public Users getById(String uid) {
         return usersMapper.selectById(uid);
+    }
+
+    @Override
+    public Long getCountsByCompanyId(String companyId) {
+
+        Long counts = usersMapper.selectCount(
+                            new QueryWrapper<Users>()
+                                .eq("hr_in_which_company_id", companyId)
+        );
+
+        return counts;
+    }
+
+    @Transactional
+    @Override
+    public void updateUserCompanyId(String hrUserId,
+                                    String realname,
+                                    String companyId) {
+        Users hrUser = new Users();
+        hrUser.setId(hrUserId);
+        hrUser.setRealName(realname);
+        hrUser.setHrInWhichCompanyId(companyId);
+
+        hrUser.setUpdatedTime(LocalDateTime.now());
+
+        usersMapper.updateById(hrUser);
     }
 }
