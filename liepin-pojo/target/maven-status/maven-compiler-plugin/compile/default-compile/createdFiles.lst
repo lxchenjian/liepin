@@ -1,6 +1,7 @@
 com/liepin/pojo/ResumeEducation.class
 com/liepin/pojo/ResumeProjectExp.class
 com/liepin/pojo/Orders.class
+com/liepin/pojo/bo/ModifyCompanyInfoBO.class
 com/liepin/pojo/Admin.class
 com/liepin/pojo/Job.class
 com/liepin/pojo/co/DataDictionaryCO.class
@@ -11,6 +12,7 @@ com/liepin/pojo/SysParams.class
 com/liepin/pojo/ResumeWorkExp.class
 com/liepin/pojo/bo/ResetPwdBO.class
 com/liepin/pojo/CompanyPhoto.class
+com/liepin/pojo/bo/QueryDictItemsBO.class
 com/liepin/pojo/bo/DataDictionaryBO.class
 com/liepin/pojo/bo/AdminBO.class
 com/liepin/pojo/Company.class
@@ -19,6 +21,7 @@ com/liepin/pojo/vo/UsersVO.class
 com/liepin/pojo/JobType.class
 com/liepin/pojo/bo/CreateAdminBO.class
 com/liepin/pojo/bo/UpdateAdminBO.class
+com/liepin/pojo/vo/CompanyInfoVO.class
 com/liepin/pojo/vo/TopIndustryWithThirdListVO.class
 com/liepin/pojo/bo/CreateCompanyBO.class
 com/liepin/pojo/bo/ReviewCompanyBO.class
@@ -27,6 +30,8 @@ com/liepin/pojo/mq/SMSContentQO.class
 com/liepin/pojo/Article.class
 com/liepin/pojo/vo/CompanySimpleVO.class
 com/liepin/pojo/bo/Base64FileBO.class
+com/liepin/pojo/bo/QueryCompanyBO.class
+com/liepin/pojo/vo/CompanyPointsVO.class
 com/liepin/pojo/ChatMessage.class
 com/liepin/pojo/vo/AdminInfoVO.class
 com/liepin/pojo/vo/SaasUserVO.class

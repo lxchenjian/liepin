@@ -21,4 +21,8 @@ public interface UserInfoMicroServiceFeign {
 
     @PostMapping("/userinfo/get")
     public GraceJSONResult get(@RequestParam("userId") String userId);
+
+    @PostMapping("/userinfo/changeUserToHR")
+    public GraceJSONResult changeUserToHR(
+            @RequestParam("hrUserId") String hrUserId);
 }

@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -199,6 +201,30 @@ public class FileController {
                 file.getInputStream(),
                 true);
         return GraceJSONResult.ok(imageUrl);
+    }
+
+    @PostMapping("uploadPhoto")
+    public GraceJSONResult uploadPhoto(
+            @RequestParam("files") MultipartFile[] files,
+            String companyId) throws Exception {
+
+        if (StringUtils.isBlank(companyId)) companyId = "";
+
+        List<String> fileList = new ArrayList<>();
+
+        for (MultipartFile f : files) {
+            // 获得文件原始名称
+            String filename = f.getOriginalFilename();
+
+            filename = "company/" + companyId + "/photo/" + dealFilename(filename);
+            String imageUrl = MinIOUtils.uploadFile(minIOConfig.getBucketName(),
+                    filename,
+                    f.getInputStream(),
+                    true);
+            fileList.add(imageUrl);
+        }
+
+        return GraceJSONResult.ok(fileList);
     }
 
     private String dealFilename(String filename) {

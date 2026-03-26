@@ -104,4 +104,16 @@ public class DataDictionaryServiceImpl extends BaseInfoProperties implements Dat
 
         return ddList;
     }
+
+    @Override
+    public List<DataDictionary> getItemsByKeys(String... keys) {
+
+        List<DataDictionary> ddList = dataDictionaryMapper.selectList(
+                new QueryWrapper<DataDictionary>()
+                        .eq("enable", YesOrNo.YES.type)
+                        .in("item_key", keys)
+        );
+
+        return ddList;
+    }
 }

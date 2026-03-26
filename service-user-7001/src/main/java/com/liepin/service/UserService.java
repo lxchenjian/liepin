@@ -2,6 +2,7 @@ package com.liepin.service;
 
 import com.liepin.pojo.Users;
 import com.liepin.pojo.bo.ModifyUserBO;
+import com.liepin.utils.PagedGridResult;
 
 public interface UserService {
 
@@ -35,4 +36,26 @@ public interface UserService {
                                     String realname,
                                     String companyId);
 
+
+    /**
+     * 企业审核成功，修改用户角色为hr
+     * @param uid
+     */
+    public void updateUserToHR(String uid);
+
+    /**
+     * 修改用户角色为普通用户
+     * @param hrUserId
+     */
+    public void updateUserToCand(String hrUserId);
+
+    /**
+     * 分页查询hr列表
+     * @param companyId
+     * @param page
+     * @param limit
+     */
+    public PagedGridResult getHRList(String companyId,
+                                     Integer page,
+                                     Integer limit);
 }

@@ -4,6 +4,8 @@ import com.liepin.base.BaseInfoProperties;
 import com.liepin.grace.result.GraceJSONResult;
 import com.liepin.pojo.DataDictionary;
 import com.liepin.pojo.bo.DataDictionaryBO;
+import com.liepin.pojo.bo.QueryDictItemsBO;
+import com.liepin.pojo.vo.CompanyPointsVO;
 import com.liepin.service.DataDictionaryService;
 import com.liepin.utils.GsonUtils;
 import com.liepin.utils.PagedGridResult;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @RestController
 @RequestMapping("dataDict")
@@ -25,6 +30,83 @@ public class DataDictController extends BaseInfoProperties {
     private DataDictionaryService dictionaryService;
 
     private static final String DDKEY_PREFIX = DATA_DICTIONARY_LIST_TYPECODE + ":";
+
+    @Autowired
+    private ThreadPoolExecutor threadPoolExecutor;
+
+    /**
+     * 获得数据字典
+     * @param itemsBO
+     * @return
+     * 压力测试 可以用 apifox
+     */
+    @PostMapping("app/getItemsByKeys")
+    public GraceJSONResult getItemsByKeys(
+            @RequestBody QueryDictItemsBO itemsBO)
+            throws Exception {
+
+        CompanyPointsVO list = new CompanyPointsVO();
+
+        CompletableFuture<List<DataDictionary>> advantageFuture = CompletableFuture.supplyAsync(() -> {
+            String advantage[] = itemsBO.getAdvantage();
+            List<DataDictionary> advantageList = dictionaryService.getItemsByKeys(advantage);
+            list.setAdvantageList(advantageList);
+            return advantageList;
+        }, threadPoolExecutor);
+
+        CompletableFuture<List<DataDictionary>> benefitsFuture = CompletableFuture.supplyAsync(() -> {
+            String benefits[] = itemsBO.getBenefits();
+            List<DataDictionary> benefitsList = dictionaryService.getItemsByKeys(benefits);
+            list.setBenefitsList(benefitsList);
+            return benefitsList;
+        }, threadPoolExecutor);
+
+        CompletableFuture<List<DataDictionary>> bonusFuture = CompletableFuture.supplyAsync(() -> {
+            String bonus[] = itemsBO.getBonus();
+            List<DataDictionary> bonusList = dictionaryService.getItemsByKeys(bonus);
+            list.setBonusList(bonusList);
+            return bonusList;
+        }, threadPoolExecutor);
+
+        CompletableFuture<List<DataDictionary>> subsidyFuture = CompletableFuture.supplyAsync(() -> {
+            String subsidy[] = itemsBO.getSubsidy();
+            List<DataDictionary> subsidyList = dictionaryService.getItemsByKeys(subsidy);
+            list.setSubsidyList(subsidyList);
+            return subsidyList;
+        }, threadPoolExecutor);
+
+        CompletableFuture allOfFuture = CompletableFuture
+                .allOf(advantageFuture,
+                        benefitsFuture,
+                        bonusFuture,
+                        subsidyFuture);
+        allOfFuture.get();
+
+        return GraceJSONResult.ok(list);
+    }
+
+    @PostMapping("app/getItemsByKeys2")
+    public GraceJSONResult getItemsByKeys2(@RequestBody QueryDictItemsBO itemsBO) {
+
+        String advantage[] = itemsBO.getAdvantage();
+        String benefits[] = itemsBO.getBenefits();
+        String bonus[] = itemsBO.getBonus();
+        String subsidy[] = itemsBO.getSubsidy();
+
+        List<DataDictionary> advantageList = dictionaryService.getItemsByKeys(advantage);
+        List<DataDictionary> benefitsList = dictionaryService.getItemsByKeys(benefits);
+        List<DataDictionary> bonusList = dictionaryService.getItemsByKeys(bonus);
+        List<DataDictionary> subsidyList = dictionaryService.getItemsByKeys(subsidy);
+
+        CompanyPointsVO list = new CompanyPointsVO();
+        list.setAdvantageList(advantageList);
+        list.setBenefitsList(benefitsList);
+        list.setBonusList(bonusList);
+        list.setSubsidyList(subsidyList);
+
+        return GraceJSONResult.ok(list);
+    }
+
 
     /**
      * 根据字典码获得该分类下的所有数据字典项的列表
@@ -76,10 +158,10 @@ public class DataDictController extends BaseInfoProperties {
         if (limit == null) page = 10;
 
         PagedGridResult listResult = dictionaryService.getDataDictListPaged(
-                                                                    typeName,
-                                                                    itemValue,
-                                                                    page,
-                                                                    limit);
+                typeName,
+                itemValue,
+                page,
+                limit);
         return GraceJSONResult.ok(listResult);
     }
 

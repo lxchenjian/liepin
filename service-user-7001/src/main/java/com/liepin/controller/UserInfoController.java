@@ -1,6 +1,7 @@
 package com.liepin.controller;
 
 import com.google.gson.Gson;
+import com.liepin.intercept.JWTCurrentUserInterceptor;
 import com.liepin.base.BaseInfoProperties;
 import com.liepin.grace.result.GraceJSONResult;
 import com.liepin.pojo.Users;
@@ -8,6 +9,8 @@ import com.liepin.pojo.bo.ModifyUserBO;
 import com.liepin.pojo.vo.UsersVO;
 import com.liepin.service.UserService;
 import com.liepin.utils.JWTUtils;
+import com.liepin.utils.PagedGridResult;
+import com.liepin.intercept.JWTCurrentUserInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -122,4 +125,44 @@ public class UserInfoController extends BaseInfoProperties {
         UsersVO usersVO = getUserInfo(userId, false);
         return GraceJSONResult.ok(usersVO);
     }
+
+    /**
+     * 转换身份成为hr
+     * @param hrUserId
+     * @return
+     */
+    @PostMapping("changeUserToHR")
+    public GraceJSONResult changeUserToHR(@RequestParam("hrUserId") String hrUserId) {
+        userService.updateUserToHR(hrUserId);
+        return GraceJSONResult.ok();
+    }
+
+    /**
+     * 用户离职公司，修改用户角色为普通用户
+     * @param hrUserId
+     * @return
+     */
+    @PostMapping("changeUserToCand")
+    public GraceJSONResult changeUserToCand(@RequestParam("hrUserId") String hrUserId) {
+        userService.updateUserToCand(hrUserId);
+        return GraceJSONResult.ok();
+    }
+
+    /**
+     * 查询当前企业下的hr列表
+     * @param page
+     * @param limit
+     * @return
+     */
+    @PostMapping("saas/hrList")
+    public GraceJSONResult changeUserToHR(Integer page, Integer limit) {
+
+        Users user = JWTCurrentUserInterceptor.currentUser.get();
+        String companyId = user.getHrInWhichCompanyId();
+
+        PagedGridResult gridResult = userService.getHRList(companyId, page, limit);
+
+        return GraceJSONResult.ok(gridResult);
+    }
+
 }

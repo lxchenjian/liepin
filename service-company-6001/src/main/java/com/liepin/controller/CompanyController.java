@@ -1,16 +1,25 @@
 package com.liepin.controller;
 
 import com.google.gson.Gson;
+import com.liepin.enums.CompanyReviewStatus;
+import com.liepin.exceptions.GraceException;
 import com.liepin.feign.UserInfoMicroServiceFeign;
 import com.liepin.base.BaseInfoProperties;
 import com.liepin.grace.result.GraceJSONResult;
+import com.liepin.grace.result.ResponseStatusEnum;
+import com.liepin.intercept.JWTCurrentUserInterceptor;
 import com.liepin.pojo.Company;
+import com.liepin.pojo.Users;
 import com.liepin.pojo.bo.CreateCompanyBO;
+import com.liepin.pojo.bo.ModifyCompanyInfoBO;
+import com.liepin.pojo.bo.QueryCompanyBO;
 import com.liepin.pojo.bo.ReviewCompanyBO;
+import com.liepin.pojo.vo.CompanyInfoVO;
 import com.liepin.pojo.vo.CompanySimpleVO;
 import com.liepin.pojo.vo.UsersVO;
 import com.liepin.service.CompanyService;
 import com.liepin.utils.JsonUtils;
+import com.liepin.utils.PagedGridResult;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -171,6 +180,194 @@ public class CompanyController extends BaseInfoProperties {
         String json = JsonUtils.objectToJson(data);
         UsersVO hrUser = JsonUtils.jsonToPojo(json, UsersVO.class);
         return hrUser;
+    }
+
+    /**
+     * saas获得企业基础信息
+     * @return
+     */
+    @PostMapping("info")
+    public GraceJSONResult info() {
+
+        Users currentUser = JWTCurrentUserInterceptor.currentUser.get();
+
+        CompanySimpleVO companyInfo = getCompany(currentUser.getHrInWhichCompanyId());
+
+        return GraceJSONResult.ok(companyInfo);
+    }
+
+    /**
+     * saas获得查询企业详情
+     * @return
+     */
+    @PostMapping("saas/moreInfo")
+    public GraceJSONResult saasMoreInfo() {
+
+        Users currentUser = JWTCurrentUserInterceptor.currentUser.get();
+
+        CompanyInfoVO companyInfo = getCompanyMoreInfo(
+                currentUser.getHrInWhichCompanyId());
+
+        return GraceJSONResult.ok(companyInfo);
+    }
+
+    /**
+     * app用户端获得查询企业详情
+     * @return
+     */
+    @PostMapping("moreInfo")
+    public GraceJSONResult moreInfo(String companyId) {
+        CompanyInfoVO companyInfo = getCompanyMoreInfo(companyId);
+        return GraceJSONResult.ok(companyInfo);
+    }
+
+    private CompanyInfoVO getCompanyMoreInfo(String companyId) {
+        if (StringUtils.isBlank(companyId)) return null;
+
+        String companyJson = redis.get(REDIS_COMPANY_MORE_INFO + ":" + companyId);
+        if (StringUtils.isBlank(companyJson)) {
+            // 查询数据库
+            Company company = companyService.getById(companyId);
+            if (company == null) {
+                return null;
+            }
+
+            CompanyInfoVO infoVO = new CompanyInfoVO();
+            BeanUtils.copyProperties(company, infoVO);
+
+            redis.set(REDIS_COMPANY_MORE_INFO + ":" + companyId,
+                    new Gson().toJson(infoVO),
+                    1 * 60);
+            return infoVO;
+        } else {
+            // 不为空，直接转换对象
+            return new Gson().fromJson(companyJson, CompanyInfoVO.class);
+        }
+    }
+
+    /**
+     * 维护企业信息
+     * @param companyInfoBO
+     * @return
+     */
+    @PostMapping("modify")
+    public GraceJSONResult modify(
+            @RequestBody ModifyCompanyInfoBO companyInfoBO) {
+
+        // 判断当前用户绑定的企业，是否和修改的企业一致，如果不一致，则异常
+        checkUser(companyInfoBO.getCurrentUserId(), companyInfoBO.getCompanyId());
+
+        // 修改企业信息
+        companyService.modifyCompanyInfo(companyInfoBO);
+
+        // 企业相册信息的保存
+        if (StringUtils.isNotBlank(companyInfoBO.getPhotos())) {
+            companyService.savePhotos(companyInfoBO);
+        }
+
+        return GraceJSONResult.ok();
+    }
+
+    /**
+     * 获得企业相册内容
+     * @param companyId
+     * @return
+     */
+    @PostMapping("getPhotos")
+    public GraceJSONResult getPhotos(String companyId) {
+        return GraceJSONResult.ok(companyService.getPhotos(companyId));
+    }
+
+    /**
+     * 获得企业相册内容
+     * @return
+     */
+    @PostMapping("saas/getPhotos")
+    public GraceJSONResult getPhotosSaas() {
+        String companyId = JWTCurrentUserInterceptor.currentUser.get()
+                .getHrInWhichCompanyId();
+        return GraceJSONResult.ok(companyService.getPhotos(companyId));
+    }
+
+    /**
+     * 校验企业下的HR是否OK
+     * @param currentUserId
+     * @param companyId
+     */
+    private void checkUser(String currentUserId, String companyId) {
+
+        if (StringUtils.isBlank(currentUserId)) {
+            GraceException.display(ResponseStatusEnum.COMPANY_INFO_UPDATED_ERROR);
+        }
+
+        UsersVO hrUser = getHRInfoVO(currentUserId);
+        if (hrUser != null && !hrUser.getHrInWhichCompanyId().equalsIgnoreCase(companyId)) {
+            GraceException.display(ResponseStatusEnum.COMPANY_INFO_UPDATED_NO_AUTH_ERROR);
+        }
+    }
+
+    // **************************** 以上为用户端所使用 ****************************
+
+    // **************************** 以下为运营平台所使用 ****************************
+
+
+    /**
+     * 查询企业列表
+     * @param companyBO
+     * @param page
+     * @param limit
+     * @return
+     */
+    @PostMapping("admin/getCompanyList")
+    public GraceJSONResult adminGetCompanyList(
+            @RequestBody @Valid QueryCompanyBO companyBO,
+            Integer page,
+            Integer limit) {
+
+        if (page == null) page = 1;
+        if (limit == null) limit = 10;
+
+        PagedGridResult gridResult = companyService.queryCompanyListPaged(
+                companyBO,
+                page,
+                limit);
+        return GraceJSONResult.ok(gridResult);
+    }
+
+    /**
+     * 根据企业id获得最新企业数据
+     * @param companyId
+     * @return
+     */
+    @PostMapping("admin/getCompanyInfo")
+    public GraceJSONResult getCompanyInfo(String companyId) {
+
+        CompanyInfoVO companyInfo = companyService.getCompanyInfo(companyId);
+
+        return GraceJSONResult.ok(companyInfo);
+    }
+
+    /**
+     * 企业审核通过，用户成为HR角色
+     * @param reviewCompanyBO
+     * @return
+     */
+    @PostMapping("admin/doReview")
+    public GraceJSONResult getCompanyInfo(
+            @RequestBody @Valid ReviewCompanyBO reviewCompanyBO) {
+
+        // 1. 审核企业
+        companyService.updateReviewInfo(reviewCompanyBO);
+
+        // 2. 如果审核成功，则更新用户角色成为HR
+        if (reviewCompanyBO.getReviewStatus() == CompanyReviewStatus.SUCCESSFUL.type) {
+            userInfoMicroServiceFeign.changeUserToHR(reviewCompanyBO.getHrUserId());
+        }
+
+        // 3. 清除用户端的企业缓存
+        redis.del(REDIS_COMPANY_BASE_INFO + ":" + reviewCompanyBO.getCompanyId());
+
+        return GraceJSONResult.ok();
     }
 
 }
