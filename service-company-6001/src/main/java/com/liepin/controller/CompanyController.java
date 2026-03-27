@@ -1,13 +1,13 @@
 package com.liepin.controller;
 
 import com.google.gson.Gson;
+import com.liepin.feign.UserInfoMicroServiceFeign;
+import com.liepin.intercept.JWTCurrentUserInterceptor;
+import com.liepin.base.BaseInfoProperties;
 import com.liepin.enums.CompanyReviewStatus;
 import com.liepin.exceptions.GraceException;
-import com.liepin.feign.UserInfoMicroServiceFeign;
-import com.liepin.base.BaseInfoProperties;
 import com.liepin.grace.result.GraceJSONResult;
 import com.liepin.grace.result.ResponseStatusEnum;
-import com.liepin.intercept.JWTCurrentUserInterceptor;
 import com.liepin.pojo.Company;
 import com.liepin.pojo.Users;
 import com.liepin.pojo.bo.CreateCompanyBO;
@@ -20,14 +20,12 @@ import com.liepin.pojo.vo.UsersVO;
 import com.liepin.service.CompanyService;
 import com.liepin.utils.JsonUtils;
 import com.liepin.utils.PagedGridResult;
+import com.liepin.feign.UserInfoMicroServiceFeign;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -252,13 +250,18 @@ public class CompanyController extends BaseInfoProperties {
      */
     @PostMapping("modify")
     public GraceJSONResult modify(
-            @RequestBody ModifyCompanyInfoBO companyInfoBO) {
+            @RequestBody ModifyCompanyInfoBO companyInfoBO,
+            Integer num) throws Exception {
+
+//        if (num!=null && num>1) {
+//            Thread.sleep(5000);
+//        }
 
         // 判断当前用户绑定的企业，是否和修改的企业一致，如果不一致，则异常
         checkUser(companyInfoBO.getCurrentUserId(), companyInfoBO.getCompanyId());
 
         // 修改企业信息
-        companyService.modifyCompanyInfo(companyInfoBO);
+        companyService.modifyCompanyInfo(companyInfoBO, num);
 
         // 企业相册信息的保存
         if (StringUtils.isNotBlank(companyInfoBO.getPhotos())) {
@@ -266,6 +269,50 @@ public class CompanyController extends BaseInfoProperties {
         }
 
         return GraceJSONResult.ok();
+    }
+
+    @GetMapping("fairLock")
+    public GraceJSONResult fairLock(Integer num) throws Exception {
+        companyService.modifyCompanyInfo(null, num);
+        return GraceJSONResult.ok();
+    }
+
+    @GetMapping("readLock")
+    public GraceJSONResult readLock() throws Exception {
+        companyService.testReadLock();
+        return GraceJSONResult.ok();
+    }
+
+    @GetMapping("writeLock")
+    public GraceJSONResult writeLock() throws Exception {
+        companyService.testWriteLock();
+        return GraceJSONResult.ok();
+    }
+
+    @GetMapping("semaphore/lock")
+    public GraceJSONResult semaphoreLock(Integer num) throws Exception {
+        companyService.testSemaphoreLock(num);
+        return GraceJSONResult.ok();
+    }
+
+    @GetMapping("semaphore/release")
+    public GraceJSONResult semaphoreRelease(Integer num) throws Exception {
+        companyService.testSemaphoreRelease(num);
+        return GraceJSONResult.ok();
+    }
+
+    @GetMapping("release/car")
+    @ResponseBody
+    public GraceJSONResult releaseCar() throws Exception {
+        companyService.testCountDownLatch();
+        return GraceJSONResult.ok("资源全部就绪，【硫酸】发车完毕。。。");
+    }
+
+    @GetMapping("doneStep/car")
+    @ResponseBody
+    public GraceJSONResult doneStepCar(String name) throws Exception {
+        companyService.testDoneStep();
+        return GraceJSONResult.ok("资源【" + name + "】准备就绪。。。");
     }
 
     /**
@@ -285,7 +332,7 @@ public class CompanyController extends BaseInfoProperties {
     @PostMapping("saas/getPhotos")
     public GraceJSONResult getPhotosSaas() {
         String companyId = JWTCurrentUserInterceptor.currentUser.get()
-                .getHrInWhichCompanyId();
+                                                                .getHrInWhichCompanyId();
         return GraceJSONResult.ok(companyService.getPhotos(companyId));
     }
 
@@ -311,26 +358,19 @@ public class CompanyController extends BaseInfoProperties {
     // **************************** 以下为运营平台所使用 ****************************
 
 
-    /**
-     * 查询企业列表
-     * @param companyBO
-     * @param page
-     * @param limit
-     * @return
-     */
     @PostMapping("admin/getCompanyList")
     public GraceJSONResult adminGetCompanyList(
-            @RequestBody @Valid QueryCompanyBO companyBO,
-            Integer page,
-            Integer limit) {
+                            @RequestBody @Valid QueryCompanyBO companyBO,
+                            Integer page,
+                            Integer limit) {
 
         if (page == null) page = 1;
         if (limit == null) limit = 10;
 
         PagedGridResult gridResult = companyService.queryCompanyListPaged(
-                companyBO,
-                page,
-                limit);
+                                                            companyBO,
+                                                            page,
+                                                            limit);
         return GraceJSONResult.ok(gridResult);
     }
 
@@ -369,5 +409,4 @@ public class CompanyController extends BaseInfoProperties {
 
         return GraceJSONResult.ok();
     }
-
 }

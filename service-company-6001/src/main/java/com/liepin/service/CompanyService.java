@@ -81,7 +81,7 @@ public interface CompanyService {
      * 修改企业信息
      * @param companyInfoBO
      */
-    public void modifyCompanyInfo(ModifyCompanyInfoBO companyInfoBO);
+    public void modifyCompanyInfo(ModifyCompanyInfoBO companyInfoBO, Integer num) throws Exception;
 
     /**
      * 修改企业相册
@@ -95,4 +95,14 @@ public interface CompanyService {
      * @return
      */
     public CompanyPhoto getPhotos(String companyId);
+
+
+    public void testReadLock();
+    public void testWriteLock();
+
+    public void testSemaphoreLock(Integer num) throws Exception;
+    public void testSemaphoreRelease(Integer num) throws Exception;
+
+    public void testCountDownLatch() throws Exception;
+    public void testDoneStep() throws Exception;
 }

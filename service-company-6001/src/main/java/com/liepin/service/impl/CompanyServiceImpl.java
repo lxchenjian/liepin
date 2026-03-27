@@ -21,6 +21,8 @@ import com.liepin.pojo.vo.CompanyInfoVO;
 import com.liepin.service.CompanyService;
 import com.liepin.utils.PagedGridResult;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.RedissonMultiLock;
+import org.redisson.api.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,9 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * <p>
@@ -166,8 +168,39 @@ public class CompanyServiceImpl extends BaseInfoProperties implements CompanySer
     }
 
     @Transactional
-    @Override
-    public void modifyCompanyInfo(ModifyCompanyInfoBO companyInfoBO) {
+//    @Override
+    public void modifyCompanyInfo2(ModifyCompanyInfoBO companyInfoBO) throws Exception {
+        // 1. 获得锁，值随意，只要不为空即可
+//        boolean isLockOK = redis.setnx("redis-lock", "123");
+        // 1.1 为锁添加过期时间
+//        redis.expire("redis-lock", 30);
+
+        // 1. 获得锁的同时增加过期时间，保证原子性
+        String selfId = UUID.randomUUID().toString();   // 加锁前生成各自的请求标识（也可以使用sid）
+        boolean isLockOK = redis.setnx("redis-lock", selfId, 30);
+
+        if (isLockOK) {
+            // 2. 加锁成功，执行业务
+//            this.doModify(companyInfoBO);
+            // 4. 执行完毕后，释放锁
+            String selfIdLock = redis.get("redis-lock");
+            if (StringUtils.isNotBlank(selfIdLock) && selfIdLock.equals(selfId)) {
+                redis.del("redis-lock");
+            }
+
+//            redis.del("redis-lock");
+        } else {
+            // 3. 加锁失败，重试
+            // 不要立马重试，因为锁住的请求可能还没执行完毕，可以sleep 100~300ms
+            Thread.sleep(200);
+
+            System.out.println("setnx锁生效中，一会重试~");
+            this.modifyCompanyInfo(companyInfoBO, 1); // 不要用递归，递归会站栈溢出
+
+        }
+    }
+
+    private void doModify(ModifyCompanyInfoBO companyInfoBO) {
 
         String companyId = companyInfoBO.getCompanyId();
         if (StringUtils.isBlank(companyId)) {
@@ -183,9 +216,262 @@ public class CompanyServiceImpl extends BaseInfoProperties implements CompanySer
         companyMapper.updateById(pendingCompany);
 
         // 修改以后，删除企业的缓存信息
-        // 最好的方式 canal方式
         redis.del(REDIS_COMPANY_MORE_INFO + ":" + companyId);
         redis.del(REDIS_COMPANY_BASE_INFO + ":" + companyId);
+    }
+
+    private ReentrantLock reentrantLock;
+
+
+
+    @Autowired
+    private RedissonClient redissonClient;
+
+
+    /**
+     * 最佳实现(Redisson版本)
+     * @param companyInfoBO
+     * @param num
+     * @throws Exception
+     */
+
+    @Transactional
+    @Override
+    public void modifyCompanyInfo(ModifyCompanyInfoBO companyInfoBO, Integer num) throws Exception {
+        // 使用redissonClient获得名为xxx的锁
+        String distLock = "redisson-lock";
+        // 非公平
+//        RLock rLock = redissonClient.getLock(distLock);
+        // 使用公平锁   不在队列里面的线程必须等待队列线程完成
+        RLock rLock = redissonClient.getFairLock(distLock);
+        // 加锁
+        //如果锁不存在，或者锁的哈希表中已经存在当前线程的标识（即当前线程已经持有锁），则：
+        //将哈希表中该线程对应的计数加 1（hincrby），实现可重入；
+        //重新设置锁的过期时间（pexpire）；
+        //返回 nil 表示获取锁成功。
+        //否则（锁已被其他线程持有），返回锁的剩余存活时间（pttl），供客户端判断还需等待多久。
+
+        //ttlRemainingFuture
+        //null：表示当前线程成功获取到了锁（包括重入）。
+        //一个正长整型：表示锁已被其他线程持有，返回的是锁当前的剩余过期时间（毫秒）。
+        rLock.lock();
+//        rLock.lock(10, TimeUnit.SECONDS);
+
+        try {
+            System.out.println("获得锁，执行业务~");
+            // 加锁成功，执行业务
+            Thread.sleep(20 * 1000);
+//            this.doModify(companyInfoBO);
+//            this.selfLock(rLock);
+            System.out.println("num = " + num);
+        } finally {
+            // 解锁
+            rLock.unlock();
+        }
+    }
+
+    // 联锁
+    private void multiLock() throws Exception {
+        RLock lock1 = redissonClient.getLock("lock1");
+        RLock lock2 = redissonClient.getLock("lock2");
+        RLock lock3 = redissonClient.getLock("lock3");
+
+        RedissonMultiLock lock = new RedissonMultiLock(lock1, lock2, lock3);
+
+        lock.lock();
+
+        try {
+            System.out.println("业务处理");
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    // 测可重入锁
+    private void selfLock(RLock rLock) throws Exception {
+        rLock.lock();
+        Thread.sleep(10 * 1000);
+        System.out.println("执行第二个方法的业务...");
+        rLock.unlock();
+        Thread.sleep(10 * 1000);
+    }
+
+    @Override
+    public void testReadLock() {
+        RReadWriteLock lock = redissonClient.getReadWriteLock("redisson-rw-lock");
+        lock.readLock().lock(15, TimeUnit.SECONDS);
+
+        System.out.println("读取业务操作。。。");
+
+//        lock.readLock().unlock();
+    }
+
+    @Override
+    public void testWriteLock() {
+        RReadWriteLock lock = redissonClient.getReadWriteLock("redisson-rw-lock");
+        lock.writeLock().lock(15, TimeUnit.SECONDS);
+
+        System.out.println("写入业务操作。。。");
+
+//        lock.writeLock().unlock();
+    }
+
+    @Override
+    public void testSemaphoreLock(Integer num) throws Exception {
+
+        // 定义信号量，声明资源的数量（停车场的车位数，餐厅的饭桌数）
+        RSemaphore semaphore = redissonClient.getSemaphore("eat-sema");
+        semaphore.trySetPermits(3);
+
+        semaphore.acquire();    // 获得资源数  --1
+        System.out.println(num + "号客人" + "来吃饭了~");
+
+//        boolean res = semaphore.tryAcquire();
+//        if (!res) {
+//            GraceException.display();
+//        }
+
+    }
+
+    @Override
+    public void testSemaphoreRelease(Integer num) throws Exception {
+        RSemaphore semaphore = redissonClient.getSemaphore("eat-sema");
+        semaphore.trySetPermits(3);
+
+        semaphore.release();    // 释放资源    ++1
+        System.out.println(num + "号客人" + "吃完走人~");
+    }
+
+    @Override
+    public void testCountDownLatch() throws Exception {
+        RCountDownLatch cdl = redissonClient.getCountDownLatch("H₂SO₄-Car");
+        cdl.trySetCount(3);     // 资源数
+        cdl.await();            // 等待全部资源数完成
+    }
+
+    @Override
+    public void testDoneStep() throws Exception {
+        RCountDownLatch cdl = redissonClient.getCountDownLatch("H₂SO₄-Car");
+        cdl.countDown();        // 待处理的资源数 ++1
+    }
+
+    @Transactional
+    // 最佳实现(未使用Redisson)
+//    @Override
+    public void modifyCompanyInfo3(ModifyCompanyInfoBO companyInfoBO, Integer num) throws Exception {
+
+        String distLock = "redis-lock";
+        String selfId = UUID.randomUUID().toString();
+        Integer expireTimes = 30;
+
+        while (redis.setnx(distLock, selfId, expireTimes)) {
+            // 如果加锁失败，则重试循环
+            System.out.println("setnx 锁生效中，一会重试~");
+            Thread.sleep(50);
+        }
+
+        // 一旦获得锁，则开启新的timer执行定期检查，做lock的自动续期
+        autoRefreshLockTimes(distLock, selfId, expireTimes);
+
+        try {
+            System.out.println("获得锁，执行业务~");
+            // 加锁成功，执行业务
+            Thread.sleep(40000);  // 这里要做续期
+            this.doModify(companyInfoBO);
+        } finally {
+            // 业务执行完毕，释放锁   无法保证原子性，极端情况会有问题
+//            String selfIdLock = redis.get(distLock);
+//            if ( StringUtils.isNotBlank(selfIdLock) && selfIdLock.equals(selfId)) {
+//                redis.del(distLock);
+//            }
+
+            // 使用LUA脚本执行删除key操作，为了保证原子性
+            // 扩展redis命令 EVAL “return KEYS[1] 3 name age sex lee lee 18 183 300”
+            String lockScript =
+                    " if redis.call('get',KEYS[1]) == ARGV[1] "
+                            + " then "
+                            +   " return redis.call('del',KEYS[1]) "
+                            + " else "
+                            +   " return 0 "
+                            + " end "
+                    ;
+            long unLockResult = redis.execLuaScript(lockScript, distLock, selfId);
+            if (unLockResult == 1) {
+                lockTimer.cancel();
+                System.out.println("释放锁，并且取消timer~");
+            }
+        }
+    }
+
+    private Timer lockTimer = new Timer();
+
+    // 自动续期
+    private void autoRefreshLockTimes(String distLock, String selfId, Integer expireTimes) {
+
+        // if redis.call('get',KEYS[1]) == ARGV[1] then return redis.call('expire',KEYS[1],30) else return 0 end
+
+        String refreshScript =
+                " if redis.call('get',KEYS[1]) == ARGV[1] "
+                        + " then "
+                        +   " return redis.call('expire',KEYS[1],30) "
+                        + " else "
+                        +   " return 0 "
+                        + " end "
+                ;
+        lockTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("自动续期，重置到30秒");
+                redis.execLuaScript(refreshScript, distLock, selfId);
+            }
+        },
+        expireTimes/3*1000, //延长多久开始 10s开始
+        expireTimes/3*1000); // 10s
+    }
+
+
+    @Transactional
+//    @Override
+    public void modifyCompanyInfo2(ModifyCompanyInfoBO companyInfoBO, Integer num) throws Exception {
+
+        String distLock = "redis-lock";
+
+        // 1. 获得锁，值随意，只要不为空即可
+//        boolean isLockOK = redis.setnx(distLock, "123");
+        // 1.1 为锁添加过期时间
+//        redis.expire(distLock, 30);
+
+        // 1. 获得锁的同时增加一个标识符
+        String selfId = UUID.randomUUID().toString();
+
+        // 2. 加锁的同时设定过期时间，如此保证操作的原子性（要么全部成功，要么失败）
+        boolean isLockOK = redis.setnx(distLock, selfId, 30);
+        System.out.println("isLockOK = " + isLockOK);
+
+        if (isLockOK) {
+            // 2. 加锁成功，执行业务
+            this.doModify(companyInfoBO);
+
+            if (num!=null && num>1) {
+                Thread.sleep(500);
+            }
+
+            // 4. 业务执行完毕，释放锁
+            String selfIdLock = redis.get(distLock);
+            if ( StringUtils.isNotBlank(selfIdLock) && selfIdLock.equals(selfId) ) {
+                // 判断自己的标识符，只能有自己当前请求的线程来删除解锁
+                redis.del(distLock);
+            }
+        } else {
+            // 3. 加锁失败，重试
+
+            // 不要立马递归或者死循环，因为锁住的请求可能还没有执行完毕，可以sleep
+            Thread.sleep(50);
+
+            System.out.println("setnx 锁生效中，一会重试~");
+            this.modifyCompanyInfo(companyInfoBO, num);
+        }
+
     }
 
     @Transactional

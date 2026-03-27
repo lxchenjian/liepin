@@ -6,8 +6,10 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.StringRedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -166,8 +168,12 @@ public class RedisOperator {
 	 * @param key
 	 * @param value
 	 */
-	public void setnx(String key, String value) {
-		redisTemplate.opsForValue().setIfAbsent(key, value);
+	public Boolean setnx(String key, String value) {
+		return redisTemplate.opsForValue().setIfAbsent(key, value);
+	}
+
+	public Boolean setnx(String key, String value, Integer seconds) {
+		return redisTemplate.opsForValue().setIfAbsent(key, value, seconds, TimeUnit.SECONDS);
 	}
 
 	/**
@@ -291,6 +297,22 @@ public class RedisOperator {
 	 */
 	public long rpush(String key, String value) {
 		return redisTemplate.opsForList().rightPush(key, value);
+	}
+
+	/**
+	 * 删锁
+	 * 原子性保证
+	 * @param script
+	 * @param key
+	 * @param value
+	 */
+	public Long execLuaScript(String script, String key, String value) {
+		return redisTemplate.execute(
+						new DefaultRedisScript<>(script, Long.class),
+		//				Arrays.asList(key),
+						Collections.singletonList(key),
+						value
+				);
 	}
 
 }
