@@ -2,7 +2,6 @@ package com.liepin.mq;
 
 import com.liepin.mq.InitResumeMQConfig;
 import com.liepin.service.ResumeService;
-import com.liepin.utils.SMSUtils;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;

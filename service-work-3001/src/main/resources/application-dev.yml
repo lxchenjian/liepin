@@ -27,7 +27,10 @@ spring:
     listener:
       simple:
         acknowledge-mode: manual  # 手动ack确认
-
+  data:
+    mongodb:
+      uri: mongodb://imooc:imooc@192.168.10.9:27017
+      database: imooc-hire-dev
 jasypt:
   encryptor:
     algorithm: PBEWithMD5AndDES

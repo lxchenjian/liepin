@@ -4,5 +4,6 @@ com/liepin/CompanyApplication.class
 com/liepin/mapper/CompanyMapper.class
 com/liepin/mapper/CompanyPhotoMapper.class
 com/liepin/controller/HelloController.class
+com/liepin/service/impl/CompanyServiceImpl$1.class
 com/liepin/controller/CompanyController.class
 com/liepin/service/CompanyService.class

@@ -4,6 +4,8 @@ import com.liepin.pojo.Users;
 import com.liepin.pojo.bo.ModifyUserBO;
 import com.liepin.utils.PagedGridResult;
 
+import java.util.List;
+
 public interface UserService {
 
     /**
@@ -58,4 +60,11 @@ public interface UserService {
     public PagedGridResult getHRList(String companyId,
                                      Integer page,
                                      Integer limit);
+
+    /**
+     * 根据用户id查询列表
+     * @param userIds
+     * @return
+     */
+    public List<Users> getByIds(List<String> userIds);
 }

@@ -170,6 +170,7 @@ public class CompanyServiceImpl extends BaseInfoProperties implements CompanySer
     @Transactional
 //    @Override
     public void modifyCompanyInfo2(ModifyCompanyInfoBO companyInfoBO) throws Exception {
+
         // 1. 获得锁，值随意，只要不为空即可
 //        boolean isLockOK = redis.setnx("redis-lock", "123");
         // 1.1 为锁添加过期时间
@@ -195,8 +196,7 @@ public class CompanyServiceImpl extends BaseInfoProperties implements CompanySer
             Thread.sleep(200);
 
             System.out.println("setnx锁生效中，一会重试~");
-            this.modifyCompanyInfo(companyInfoBO, 1); // 不要用递归，递归会站栈溢出
-
+            this.modifyCompanyInfo(companyInfoBO, 1);
         }
     }
 
@@ -222,38 +222,20 @@ public class CompanyServiceImpl extends BaseInfoProperties implements CompanySer
 
     private ReentrantLock reentrantLock;
 
-
-
     @Autowired
     private RedissonClient redissonClient;
 
 
-    /**
-     * 最佳实现(Redisson版本)
-     * @param companyInfoBO
-     * @param num
-     * @throws Exception
-     */
-
     @Transactional
     @Override
     public void modifyCompanyInfo(ModifyCompanyInfoBO companyInfoBO, Integer num) throws Exception {
+
         // 使用redissonClient获得名为xxx的锁
         String distLock = "redisson-lock";
-        // 非公平
 //        RLock rLock = redissonClient.getLock(distLock);
-        // 使用公平锁   不在队列里面的线程必须等待队列线程完成
+        // 使用公平锁
         RLock rLock = redissonClient.getFairLock(distLock);
         // 加锁
-        //如果锁不存在，或者锁的哈希表中已经存在当前线程的标识（即当前线程已经持有锁），则：
-        //将哈希表中该线程对应的计数加 1（hincrby），实现可重入；
-        //重新设置锁的过期时间（pexpire）；
-        //返回 nil 表示获取锁成功。
-        //否则（锁已被其他线程持有），返回锁的剩余存活时间（pttl），供客户端判断还需等待多久。
-
-        //ttlRemainingFuture
-        //null：表示当前线程成功获取到了锁（包括重入）。
-        //一个正长整型：表示锁已被其他线程持有，返回的是锁当前的剩余过期时间（毫秒）。
         rLock.lock();
 //        rLock.lock(10, TimeUnit.SECONDS);
 
@@ -356,7 +338,6 @@ public class CompanyServiceImpl extends BaseInfoProperties implements CompanySer
     }
 
     @Transactional
-    // 最佳实现(未使用Redisson)
 //    @Override
     public void modifyCompanyInfo3(ModifyCompanyInfoBO companyInfoBO, Integer num) throws Exception {
 
@@ -376,17 +357,16 @@ public class CompanyServiceImpl extends BaseInfoProperties implements CompanySer
         try {
             System.out.println("获得锁，执行业务~");
             // 加锁成功，执行业务
-            Thread.sleep(40000);  // 这里要做续期
+            Thread.sleep(40000);
             this.doModify(companyInfoBO);
         } finally {
-            // 业务执行完毕，释放锁   无法保证原子性，极端情况会有问题
+            // 业务执行完毕，释放锁
 //            String selfIdLock = redis.get(distLock);
 //            if ( StringUtils.isNotBlank(selfIdLock) && selfIdLock.equals(selfId)) {
 //                redis.del(distLock);
 //            }
 
             // 使用LUA脚本执行删除key操作，为了保证原子性
-            // 扩展redis命令 EVAL “return KEYS[1] 3 name age sex lee lee 18 183 300”
             String lockScript =
                     " if redis.call('get',KEYS[1]) == ARGV[1] "
                             + " then "
@@ -425,8 +405,8 @@ public class CompanyServiceImpl extends BaseInfoProperties implements CompanySer
                 redis.execLuaScript(refreshScript, distLock, selfId);
             }
         },
-        expireTimes/3*1000, //延长多久开始 10s开始
-        expireTimes/3*1000); // 10s
+        expireTimes/3*1000,
+        expireTimes/3*1000);
     }
 
 
@@ -501,6 +481,14 @@ public class CompanyServiceImpl extends BaseInfoProperties implements CompanySer
         return companyPhotoMapper.selectOne(
                 new QueryWrapper<CompanyPhoto>()
                     .eq("company_id", companyId)
+        );
+    }
+
+    @Override
+    public List<Company> getByIds(List<String> companyIds) {
+        return companyMapper.selectList(
+                new QueryWrapper<Company>()
+                        .in("id", companyIds)
         );
     }
 }

@@ -1,7 +1,6 @@
 package com.liepin.pojo.vo;
 
 import com.liepin.pojo.DataDictionary;
-import com.liepin.pojo.DataDictionary;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

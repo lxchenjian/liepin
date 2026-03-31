@@ -4,18 +4,25 @@ import com.google.gson.Gson;
 import com.liepin.intercept.JWTCurrentUserInterceptor;
 import com.liepin.base.BaseInfoProperties;
 import com.liepin.grace.result.GraceJSONResult;
+import com.liepin.pojo.Company;
 import com.liepin.pojo.Users;
 import com.liepin.pojo.bo.ModifyUserBO;
+import com.liepin.pojo.bo.SearchBO;
+import com.liepin.pojo.vo.CompanySimpleVO;
 import com.liepin.pojo.vo.UsersVO;
 import com.liepin.service.UserService;
+import com.liepin.utils.GsonUtils;
 import com.liepin.utils.JWTUtils;
 import com.liepin.utils.PagedGridResult;
-import com.liepin.intercept.JWTCurrentUserInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.beans.Beans;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("userinfo")
@@ -96,8 +103,8 @@ public class UserInfoController extends BaseInfoProperties {
             @RequestParam("companyId") String companyId) {
 
         userService.updateUserCompanyId(hrUserId,
-                                        realname,
-                                        companyId);
+                realname,
+                companyId);
 
         Users hrUser = userService.getById(hrUserId);
 
@@ -163,6 +170,28 @@ public class UserInfoController extends BaseInfoProperties {
         PagedGridResult gridResult = userService.getHRList(companyId, page, limit);
 
         return GraceJSONResult.ok(gridResult);
+    }
+
+    /**
+     * 根据用户id获得用户列表
+     * @param searchBO
+     * @return
+     */
+    @PostMapping("list/get")
+    public GraceJSONResult getList(@RequestBody SearchBO searchBO) {
+
+        List<Users> userList = userService.getByIds(searchBO.getUserIds());
+
+        List<UsersVO> userVOList = new ArrayList<>();
+        for (Users u : userList) {
+            UsersVO usersVO = new UsersVO();
+            BeanUtils.copyProperties(u, usersVO);
+            userVOList.add(usersVO);
+        }
+
+        String userListStr = GsonUtils.object2String(userVOList);
+
+        return GraceJSONResult.ok(userListStr);
     }
 
 }

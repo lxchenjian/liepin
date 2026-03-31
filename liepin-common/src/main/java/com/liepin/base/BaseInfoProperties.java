@@ -36,6 +36,8 @@ public class BaseInfoProperties {
     public static final Integer COMMON_START_PAGE_ZERO = 0;
     public static final Integer COMMON_PAGE_SIZE = 10;
 
+    public static final Integer SYS_PARAMS_PK = 1001;
+
     public static final String MOBILE_SMSCODE = "mobile:smscode";
     public static final String REDIS_USER_TOKEN = "redis_user_token";
     public static final String REDIS_USER_INFO = "redis_user_info";

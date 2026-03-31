@@ -10,17 +10,14 @@ import com.liepin.grace.result.GraceJSONResult;
 import com.liepin.grace.result.ResponseStatusEnum;
 import com.liepin.pojo.Company;
 import com.liepin.pojo.Users;
-import com.liepin.pojo.bo.CreateCompanyBO;
-import com.liepin.pojo.bo.ModifyCompanyInfoBO;
-import com.liepin.pojo.bo.QueryCompanyBO;
-import com.liepin.pojo.bo.ReviewCompanyBO;
+import com.liepin.pojo.bo.*;
 import com.liepin.pojo.vo.CompanyInfoVO;
 import com.liepin.pojo.vo.CompanySimpleVO;
 import com.liepin.pojo.vo.UsersVO;
 import com.liepin.service.CompanyService;
+import com.liepin.utils.GsonUtils;
 import com.liepin.utils.JsonUtils;
 import com.liepin.utils.PagedGridResult;
-import com.liepin.feign.UserInfoMicroServiceFeign;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("company")
@@ -127,7 +126,7 @@ public class CompanyController extends BaseInfoProperties {
             return simpleVO;
         } else {
             // 不为空，直接转换对象
-           return new Gson().fromJson(companyJson, CompanySimpleVO.class);
+            return new Gson().fromJson(companyJson, CompanySimpleVO.class);
         }
     }
 
@@ -143,9 +142,9 @@ public class CompanyController extends BaseInfoProperties {
 
         // 1. 微服务调用，绑定HR企业id
         GraceJSONResult result = userInfoMicroServiceFeign.bindingHRToCompany(
-                                                    reviewCompanyBO.getHrUserId(),
-                                                    reviewCompanyBO.getRealname(),
-                                                    reviewCompanyBO.getCompanyId());
+                reviewCompanyBO.getHrUserId(),
+                reviewCompanyBO.getRealname(),
+                reviewCompanyBO.getCompanyId());
         String hrMobile = result.getData().toString();
 //        System.out.println(hrMobile);
 
@@ -332,7 +331,7 @@ public class CompanyController extends BaseInfoProperties {
     @PostMapping("saas/getPhotos")
     public GraceJSONResult getPhotosSaas() {
         String companyId = JWTCurrentUserInterceptor.currentUser.get()
-                                                                .getHrInWhichCompanyId();
+                .getHrInWhichCompanyId();
         return GraceJSONResult.ok(companyService.getPhotos(companyId));
     }
 
@@ -360,17 +359,17 @@ public class CompanyController extends BaseInfoProperties {
 
     @PostMapping("admin/getCompanyList")
     public GraceJSONResult adminGetCompanyList(
-                            @RequestBody @Valid QueryCompanyBO companyBO,
-                            Integer page,
-                            Integer limit) {
+            @RequestBody @Valid QueryCompanyBO companyBO,
+            Integer page,
+            Integer limit) {
 
         if (page == null) page = 1;
         if (limit == null) limit = 10;
 
         PagedGridResult gridResult = companyService.queryCompanyListPaged(
-                                                            companyBO,
-                                                            page,
-                                                            limit);
+                companyBO,
+                page,
+                limit);
         return GraceJSONResult.ok(gridResult);
     }
 
@@ -409,4 +408,28 @@ public class CompanyController extends BaseInfoProperties {
 
         return GraceJSONResult.ok();
     }
+
+    /**
+     * 根据企业id获得企业列表
+     * @param searchBO
+     * @return
+     */
+    @PostMapping("list/get")
+    public GraceJSONResult getList(@RequestBody SearchBO searchBO) {
+
+        List<Company> companyList = companyService.getByIds(searchBO.getCompanyIds());
+
+        List<CompanyInfoVO> companyVOList = new ArrayList<>();
+        for (Company c : companyList) {
+            CompanyInfoVO companyInfoVO = new CompanyInfoVO();
+            BeanUtils.copyProperties(c, companyInfoVO);
+            companyInfoVO.setCompanyId(c.getId());
+            companyVOList.add(companyInfoVO);
+        }
+
+        String companyListStr = GsonUtils.object2String(companyVOList);
+
+        return GraceJSONResult.ok(companyListStr);
+    }
+
 }

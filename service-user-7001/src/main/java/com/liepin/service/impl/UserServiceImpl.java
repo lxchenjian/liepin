@@ -97,7 +97,6 @@ public class UserServiceImpl extends BaseInfoProperties implements UserService {
 
         /**
          * update-strategy: not_empty
-         * 最小成本方案 null -> 0
          */
         hrUser.setHrInWhichCompanyId("0");
 
@@ -117,5 +116,13 @@ public class UserServiceImpl extends BaseInfoProperties implements UserService {
         );
 
         return setterPagedGrid(hrList, page);
+    }
+
+    @Override
+    public List<Users> getByIds(List<String> userIds) {
+        return usersMapper.selectList(
+                new QueryWrapper<Users>()
+                    .in("id", userIds)
+        );
     }
 }

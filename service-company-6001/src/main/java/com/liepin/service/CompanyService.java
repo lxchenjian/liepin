@@ -9,6 +9,8 @@ import com.liepin.pojo.bo.ReviewCompanyBO;
 import com.liepin.pojo.vo.CompanyInfoVO;
 import com.liepin.utils.PagedGridResult;
 
+import java.util.List;
+
 /**
  * <p>
  * 企业表 服务类
@@ -105,4 +107,12 @@ public interface CompanyService {
 
     public void testCountDownLatch() throws Exception;
     public void testDoneStep() throws Exception;
+
+
+    /**
+     * 根据企业id查询列表
+     * @param companyIds
+     * @return
+     */
+    public List<Company> getByIds(List<String> companyIds);
 }
