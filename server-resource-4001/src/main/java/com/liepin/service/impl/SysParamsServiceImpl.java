@@ -31,6 +31,9 @@ public class SysParamsServiceImpl extends BaseInfoProperties implements SysParam
         params.setMaxResumeRefreshCounts(maxCounts);
 
         sysParamsMapper.updateById(params);
+
+        // 这里进行redis更新，但是重启项目检查不到。 解决：缓存预热
+        //redis.set(REDIS_MAX_RESUME_REFRESH_COUNTS,maxCounts+"");
     }
 
     @Override

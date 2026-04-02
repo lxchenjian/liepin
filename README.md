@@ -601,3 +601,57 @@ mongTemplate列表分页查询
 视频：2-12 MongoDB - 查询举报记录 - 2（37:10）
 视频：2-13 MongoDB - 违规处理HR职位最近学习
 视频：2-14 本章小节（04:49）
+
+
+# 第十四周 多级缓存架构设计与分布式协调进阶
+第1章 多级缓存架构设计与分布式协调进阶
+多级缓存架构、缓存预热、
+进程缓存、caffeine本地缓存(进程内缓存/JVM缓存)、LUA脚本与语法
+Nginx、OpenResty、Nginx + OpenResty + LUA
+缓存同步方案Canal
+高并发压测
+
+本章概述
+自启动缓存预热
+刷新
+
+多级缓存架构的出现
+JVM缓存 Caffeine
+进程缓存
+        进程外缓存
+                分布式缓存Redis/MemCache
+        进程内(间)缓存——————劣势：无法实现集群的共享
+                JVM缓存(本地)
+                Ehcache
+                Guava Cache
+                Caffeine(基于Guava Cache)
+
+Caffeine的基本使用
+SpringBoot集成Caffeine
+LUA脚本入门
+LUA脚本-数据类型
+LUA脚本-循环
+LUA脚本-条件判断与函数
+Nginx概述与安装
+nginx.conf 核心配置文件
+OpenResty概述与安装
+Nginx反向代理OpenResty集群
+OpenResty 基本演绎与lua插件
+Nginx 负载均衡
+拓展：一致性哈希算法
+VSCode 远程SSH编辑工具
+OpenResty 各种请求参数的获得
+OpenResty 自定义转发HTTP请求
+OpenResty 集成Redis
+OpenResty 实现网关缓存
+Nginx 本地缓存共享字典的实现
+多级缓存数据同步方案
+Docker更新Canal环境变量
+Canal 缓存数据同步
+多级缓存高并发压测(2000次)
+nginx+openresty+caffeine+redis  5.76ms
+caffeine+redis 4.63ms
+nginx+caffeine+redis(去掉网关缓存) 6.83ms
+redis(去掉本地缓存caffeine) 9.49ms
+
+本章小节
