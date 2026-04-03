@@ -655,3 +655,39 @@ nginx+caffeine+redis(去掉网关缓存) 6.83ms
 redis(去掉本地缓存caffeine) 9.49ms
 
 本章小节
+
+# 第十五周 Zookeeper分布式锁与变种多级缓存
+第1章 Zookeeper 分布式锁与变种多级缓存-1
+zookeeper，乐观锁，数据(节点)监听=canal，分布式锁
+
+本章概述（04:32）
+Zookeeper 入门概述（16:49）
+Zookeeper的数据结构与应用场景（17:06）
+Docker安装与配置Zookeeper（18:31）
+Zookeeper核心配置详述（06:56）
+Zookeeper基本操作与节点类型（13:59）
+Zookeeper节点元数据信息（06:26）
+Zookeeper 节点事件监听watcher（10:41）
+Zookeeper的Java客户端api工具（14:02）
+JavaClient操作zk节点（17:13）
+JavaClient监听zk节点（12:04）
+Zookeeper 分布式锁流程分析（06:58）
+ZK分布式锁 - 创建连接器最近学习
+ZK分布式锁-创建锁（18:41）
+ZK分布式锁-等待监听锁（21:32）
+视频：1-16 ZK分布式锁 - 释放并测试锁（06:38）
+第2章 Zookeeper 分布式锁与变种多级缓存-2
+
+Curator ZK框架整合实现
+Curator 分布式(不)可重入锁
+Curator 分布式读写锁
+Curator分布式信号量
+Curator分布式计数器
+CuratorZK节点数据预热
+乐观锁的实现
+实现对节点的监听
+Curator 监听并同步数据
+延迟队列-最终一致性
+延迟队列-多库数据一致性的校验
+拓展：延迟队列-不定时间隔重试校验
+本章小节=

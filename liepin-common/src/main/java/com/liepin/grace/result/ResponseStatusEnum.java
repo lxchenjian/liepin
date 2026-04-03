@@ -97,6 +97,7 @@ public enum ResponseStatusEnum {
     SYSTEM_ERROR_BLACK_IP(5621, false, "请求过于频繁，请稍后重试！"),
     SYSTEM_SMS_FALLBACK_ERROR(5587, false, "短信业务繁忙，请稍后再试！"),
     SYS_DATA_ERROR(5588, false, "系统参数为空，请检查系统参数表sys_params！"),
+    SYSTEM_ERROR_NOT_BLANK(5599, false, "系统错误，参数不能为空！"),
 
     DATA_DICT_EXIST_ERROR(5631, false, "数据字典已存在，不可重复添加或修改！"),
     DATA_DICT_DELETE_ERROR(5632, false, "删除数据字典失败！"),

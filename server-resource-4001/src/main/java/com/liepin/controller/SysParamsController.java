@@ -31,7 +31,18 @@ public class SysParamsController {
             return GraceJSONResult.errorCustom(
                     ResponseStatusEnum.SYSTEM_PARAMS_SETTINGS_ERROR);
 
+        //ZKLock zkLock = zkConnecter.getLock("imooc-lock");
+        //zkLock.get();
+
+        // 测试zookeeper分布式锁
+        //try {
+        //    Thread.sleep(2500);
+        //} catch (InterruptedException e) {
+        //    e.printStackTrace();
+        //}
         sysParamsService.updateMaxResumeRefreshCounts(maxCounts, version);
+
+        //zkLock.release();
 
         // TODO version zk的乐观锁机制（后面再讲）
         return GraceJSONResult.ok(0);
