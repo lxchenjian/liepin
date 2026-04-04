@@ -311,18 +311,20 @@ public class ResumeController extends BaseInfoProperties {
 
         // 查询最大允许刷新的参数（写死为3，后续会改为其他的中间件）
         //int maxResumeRefreshCounts = 3;
-        String maxCountsStr = redis.get(REDIS_MAX_RESUME_REFRESH_COUNTS);
-        int maxResumeRefreshCounts = Integer.valueOf(maxCountsStr);
+//        String maxCountsStr = redis.get(REDIS_MAX_RESUME_REFRESH_COUNTS);
+//        int maxResumeRefreshCounts = Integer.valueOf(maxCountsStr);
 
         // 从本地缓存中获得最大刷新次数，如果没有，则从redis中获得
-        //Integer maxResumeRefreshCounts = resumeRefreshCountsCache.get(CACHE_MAX_RESUME_REFRESH_COUNTS, s -> {
-        //    System.out.println("本地缓存没有命中，从redis中查询...");
-        //    String maxCountsStr = redis.get(REDIS_MAX_RESUME_REFRESH_COUNTS);
-        //    return Integer.valueOf(maxCountsStr);
-        //    // 此处由于我们使用了缓存预热，所以可以直接从redis中获得
-        //    // 如果没有缓存预热，可以写死一个固定值
-        //    // 若业务不同，可以会存在动态数据存取（比如每个用户权限，不同商品的属性信息），那么此处则需要查询数据库
-        //});
+        Integer maxResumeRefreshCounts = resumeRefreshCountsCache.get(CACHE_MAX_RESUME_REFRESH_COUNTS, s -> {
+            System.out.println("本地缓存没有命中，从redis中查询...");
+            String maxCountsStr = redis.get(REDIS_MAX_RESUME_REFRESH_COUNTS);
+
+            // TODO 还是没有，从zookeeper中获得
+            return Integer.valueOf(maxCountsStr);
+            // 此处由于我们使用了缓存预热，所以可以直接从redis中获得
+            // 如果没有缓存预热，可以写死一个固定值
+            // 若业务不同，可以会存在动态数据存取（比如每个用户权限，不同商品的属性信息），那么此处则需要查询数据库
+        });
 
         // 从redis中获得用户在当天的已刷新次数，如果 <= 该系统参数，
         // 则刷新，否则返回错误提示：本日刷新字数已达上限

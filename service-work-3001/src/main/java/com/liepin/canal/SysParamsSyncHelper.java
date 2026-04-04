@@ -10,8 +10,8 @@ import top.javatool.canal.client.annotation.CanalTable;
 import top.javatool.canal.client.handler.EntryHandler;
 
 @Slf4j
-@CanalTable("sys_params")      // 指定监听的表名
-@Component
+//@CanalTable("sys_params")      // 指定监听的表名
+//@Component
 public class SysParamsSyncHelper extends BaseInfoProperties
         implements EntryHandler<SysParamsCO> // 指定表关联的实体对象（javabean）
 {

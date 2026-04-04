@@ -8,6 +8,7 @@ import com.liepin.grace.result.ResponseStatusEnum;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import org.apache.zookeeper.KeeperException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,6 +37,14 @@ public class GraceExceptionHandler {
 //        return GraceJSONResult.errorMsg(e.getMessage());
 //    }
 
+
+
+    @ExceptionHandler(KeeperException.BadVersionException.class)
+    @ResponseBody
+    public GraceJSONResult returnBadVersionException(KeeperException.BadVersionException e) {
+        e.printStackTrace();
+        return GraceJSONResult.exception(ResponseStatusEnum.ZOOKEEPER_BAD_VERSION_ERROR);
+    }
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     @ResponseBody
     public GraceJSONResult returnMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {

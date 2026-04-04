@@ -20,9 +20,11 @@ public interface SysParamsService {
 
     /**
      * 更新简历的最大刷新次数
+     *
      * @param maxCounts
      * @param version
+     * @return
      */
-    public void updateMaxResumeRefreshCounts(Integer maxCounts, Integer version);
+    public int updateMaxResumeRefreshCounts(Integer maxCounts, Integer version) throws Exception;
 
 }

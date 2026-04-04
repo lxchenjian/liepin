@@ -69,3 +69,14 @@ canal:
 logging:
   level:
     top.javatool.canal.client: warn
+
+zookeeper:
+  curator:
+    #    host: 192.168.1.121:2181,192.168.1.122:2181,192.168.1.123:2181
+    host: 192.168.10.9:2181
+    connectionTimeoutMs: 30000
+    sessionTimeoutMs: 3000
+    sleepMsBetweenRetry: 2000
+    maxRetries: 3
+    namespace: curator-imooc # 懒加载
+

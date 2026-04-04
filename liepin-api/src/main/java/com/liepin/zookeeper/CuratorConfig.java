@@ -1,4 +1,4 @@
-package com.liepin.zookeeper;//package com.imooc.api.zookeeper;
+//package com.liepin.zookeeper;
 //
 //import lombok.Data;
 //import org.apache.curator.RetryPolicy;
@@ -24,6 +24,8 @@ package com.liepin.zookeeper;//package com.imooc.api.zookeeper;
 //
 //    @Bean("curatorClient")
 //    public CuratorFramework curatorClient() {
+//
+//        // 多种重试机制
 //        // 三秒后重连一次，只连一次
 //        //RetryPolicy retryOneTime = new RetryOneTime(3000);
 //        // 每3秒重连一次，重连3次
@@ -70,9 +72,9 @@ package com.liepin.zookeeper;//package com.imooc.api.zookeeper;
 //
 //            //System.out.println(type.name());
 //
-//            //NODE_CREATED
-//            //NODE_CHANGED
-//            //NODE_DELETED
+//            //NODE_CREATED 创建
+//            //NODE_CHANGED 改变
+//            //NODE_DELETED 删除
 //
 //            //switch (type.name()) {
 //            //    case
