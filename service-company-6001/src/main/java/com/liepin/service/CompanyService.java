@@ -9,6 +9,7 @@ import com.liepin.pojo.bo.ReviewCompanyBO;
 import com.liepin.pojo.vo.CompanyInfoVO;
 import com.liepin.utils.PagedGridResult;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -115,4 +116,18 @@ public interface CompanyService {
      * @return
      */
     public List<Company> getByIds(List<String> companyIds);
+
+    /**
+     * 判断当前企业是否VIP
+     * @param companyId
+     * @return
+     */
+    public boolean getIsVip(String companyId);
+
+    /**
+     * 设定企业为vip
+     * @param companyId
+     * @param expireDate
+     */
+    public void setCompanyVip(String companyId, LocalDate expireDate);
 }

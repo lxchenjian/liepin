@@ -21,7 +21,7 @@ spring:
         - id: companyRoute
           uri: lb://company-service
           predicates:
-            - Path=/c/**,/company/**
+            - Path=/c/**,/company/**,/tradeOrder/**
         - id: authRoute
           uri: lb://auth-service
           predicates:

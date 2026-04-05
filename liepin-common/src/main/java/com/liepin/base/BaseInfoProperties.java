@@ -8,7 +8,9 @@ import com.liepin.utils.PagedGridResult;
 import com.liepin.utils.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.server.ServerWebExchange;
@@ -120,7 +122,8 @@ public class BaseInfoProperties {
     public static final String REDIS_USER_LIKE_VLOG = "redis_user_like_vlog";
 
 
-    // 支付中心地址 - 创建商户订单
+    // 支付中心地址 - 创建商户订单  尝试ip是否能ping通，端口是否能通
+    // 测试订单是否建立成功 http://payment.t.mukewang.com:9060/payment/getMerchantOrderInfo?merchantOrderId=
 //    public static final String PAYMENT_URL_CREATE_MERCHANT_ORDER = "http://192.168.1.6:9060/payment/createMerchantOrder";		// dev
     public static final String PAYMENT_URL_CREATE_MERCHANT_ORDER = "http://172.17.172.127:9060/payment/createMerchantOrder";		// prod
     //    String PAYMENT_URL_CREATE_MERCHANT_ORDER = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";		// produce
@@ -157,6 +160,18 @@ public class BaseInfoProperties {
         gridResult.setRecords(pageList.getTotal());
         gridResult.setTotal(pageList.getPages());
         return gridResult;
+    }
+
+    /**
+     * 调用支付中心需要开通账号
+     * @return
+     */
+    public HttpHeaders getHeadersForWxPay() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("imoocUserId", "test");
+        headers.add("password", "test");
+        return headers;
     }
 
 }

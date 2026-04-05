@@ -182,6 +182,11 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.a3test.component</groupId>
+            <artifactId>idworker-snowflake</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <dependency>
             <groupId>com.tencentcloudapi</groupId>

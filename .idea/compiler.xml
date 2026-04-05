@@ -10,11 +10,12 @@
         <module name="server-resource-4001" />
         <module name="liepin-common" />
         <module name="service-work-3001" />
+        <module name="rabbit-consumer" />
+        <module name="service-company-6001" />
         <module name="liepin-pojo" />
         <module name="liepin-api" />
-        <module name="rabbit-consumer" />
         <module name="rabbit-producer" />
-        <module name="service-company-6001" />
+        <module name="payment-center-9060" />
         <module name="auth-service-8111" />
         <module name="service-file-5001" />
         <module name="service-user-7001" />
@@ -34,6 +35,7 @@
       <module name="liepin-api" options="-parameters" />
       <module name="liepin-common" options="-parameters" />
       <module name="liepin-pojo" options="-parameters" />
+      <module name="payment-center-9060" options="-parameters" />
       <module name="rabbit-consumer" options="-parameters" />
       <module name="rabbit-producer" options="-parameters" />
       <module name="server-resource-4001" options="-parameters" />

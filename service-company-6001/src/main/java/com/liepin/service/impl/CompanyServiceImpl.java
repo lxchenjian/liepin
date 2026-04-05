@@ -19,6 +19,7 @@ import com.liepin.pojo.bo.QueryCompanyBO;
 import com.liepin.pojo.bo.ReviewCompanyBO;
 import com.liepin.pojo.vo.CompanyInfoVO;
 import com.liepin.service.CompanyService;
+import com.liepin.utils.LocalDateUtils;
 import com.liepin.utils.PagedGridResult;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.RedissonMultiLock;
@@ -30,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -490,5 +492,52 @@ public class CompanyServiceImpl extends BaseInfoProperties implements CompanySer
                 new QueryWrapper<Company>()
                         .in("id", companyIds)
         );
+    }
+
+    @Override
+    public boolean getIsVip(String companyId) {
+
+        boolean vipCompany = false;
+
+        // 从redis中查询，如果存在直接返回即可
+        String vipStr = redis.get(REDIS_COMPANY_IS_VIP + ":" + companyId);
+        if (StringUtils.isNotBlank(vipStr)) {
+            vipCompany = Boolean.valueOf(vipStr);
+        } else {
+            Company company = getById(companyId);
+            if (company != null) {
+                Integer isVip = company.getIsVip();
+                LocalDate vipExpireDate = company.getVipExpireDate();
+
+                if (vipExpireDate != null) {
+                    long expireDays = LocalDateUtils.getChronoUnitBetween(LocalDate.now(),
+                                                                        vipExpireDate,
+                                                                        ChronoUnit.DAYS,
+                                                                        false);
+                    // isVip == 1 并且 过期时间 >= 当前日期
+                    if (isVip == YesOrNo.YES.type && expireDays >= 0) {
+                        vipCompany = true;
+                    }
+                }
+            }
+        }
+
+        redis.set(REDIS_COMPANY_IS_VIP + ":" + companyId,
+                    String.valueOf(vipCompany),
+                    12 * 60 * 60);
+        return vipCompany;
+    }
+
+    @Transactional
+    @Override
+    public void setCompanyVip(String companyId, LocalDate expireDate) {
+
+        Company companyVip = new Company();
+        companyVip.setId(companyId);
+        companyVip.setVipExpireDate(expireDate);
+        companyVip.setIsVip(YesOrNo.YES.type);
+        companyVip.setUpdatedTime(LocalDateTime.now());
+
+        companyMapper.updateById(companyVip);
     }
 }
