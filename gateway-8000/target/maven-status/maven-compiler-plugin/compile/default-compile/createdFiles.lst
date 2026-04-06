@@ -1,7 +1,9 @@
 META-INF/spring-configuration-metadata.json
+com/liepin/CorsConfig.class
+com/liepin/filter/SecurityFilterJWT.class
 com/liepin/controller/HelloController.class
 com/liepin/GatewayApplication.class
-com/liepin/CorsConfig.class
 com/liepin/filter/IPLimitFilter.class
-com/liepin/filter/SecurityFilterJWT.class
 com/liepin/filter/ExcludeUrlProperties.class
+com/liepin/GatewayConfiguration$1.class
+com/liepin/GatewayConfiguration.class

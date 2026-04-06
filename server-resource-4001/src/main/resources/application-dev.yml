@@ -64,11 +64,6 @@ canal:
   user-name: canal
   password: canal
 
-# 禁止canal的日志
-# 消息中如果有null，是因为实体类的字段名称和数据库不匹配
-logging:
-  level:
-    top.javatool.canal.client: warn
 
 zookeeper:
   curator:
@@ -79,4 +74,13 @@ zookeeper:
     sleepMsBetweenRetry: 2000
     maxRetries: 3
     namespace: curator-imooc # 懒加载
+
+# 禁止canal的日志
+# 消息中如果有null，是因为实体类的字段名称和数据库不匹配
+# sleuth
+logging:
+  level:
+    top.javatool.canal.client: warn
+    org.springframework.cloud.openfeign: debug
+    org.springframework.cloud.sleuth: debug
 

@@ -743,3 +743,47 @@ natapp
 拓展：秒杀业务流程解析最近学习
 拓展：秒杀限流手段探究（04:50）
 本章小节（06:07）
+
+
+
+
+# 第十七周 高并发流量防卫兵与熔断限流实战
+第1章 高并发流量防卫兵与熔断限流实战
+熔断降级
+Sentinel
+Sentinel限流规则
+Sentinel熔断规则
+微服务网关限流
+链路追踪Sleuth
+可视化zipkin
+
+测试接口：简历刷新
+
+本章概述（02:34）
+微服务熔断限流降级概念（12:15）
+Sentinel 介绍概述（07:28）
+安装 Sentinel控制台（06:05）
+Springboot构建Sentinel监控服务（13:39）
+Sentinel 流量控制规则（07:00）
+Sentinel 自定义限流响应与实时监控（10:21）
+jar+配置
+
+Sentinel 自定义资源与限流规则（14:36）
+@SentinelResource(blockHandler = 方法名称,fallback = 方法名称)
+blockHandler 限流
+fallback 降级
+
+Sentinel 远程服务不可用客户端降级（11:59）
+oepnfeign
+company/information  里面查询了user服务，然后user服务宕机了
+在@FeignClient 注解里面加一个 fallback
+
+Sentinel 熔断规则（06:11）
+Sentinel 热点规则（03:54）
+Gateway 网关限流配置（12:57）
+Gateway 网关手动限流与自定义响应（17:35）
+链路追踪 Sleuth（11:38）
+整合 Slueth（09:13）
+Zipkin与Sleuth集成可视化（19:17）
+拓展：Zipkin 数据存储mysql（12:03）
+本章小节（03:27）

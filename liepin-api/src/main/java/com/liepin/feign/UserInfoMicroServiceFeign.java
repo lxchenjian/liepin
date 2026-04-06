@@ -1,5 +1,6 @@
 package com.liepin.feign;
 
+import com.liepin.feign.fallback.UserInfoMicroServiceFeignFallback;
 import com.liepin.grace.result.GraceJSONResult;
 import com.liepin.pojo.bo.SearchBO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient("user-service")
+@FeignClient(value = "user-service", fallback = UserInfoMicroServiceFeignFallback.class)
 public interface UserInfoMicroServiceFeign {
 
     @PostMapping("/userinfo/list/get")

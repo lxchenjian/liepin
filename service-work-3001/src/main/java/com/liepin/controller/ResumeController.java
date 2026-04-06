@@ -1,5 +1,7 @@
 package com.liepin.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.liepin.base.BaseInfoProperties;
 import com.liepin.enums.ActiveTime;
@@ -296,18 +298,41 @@ public class ResumeController extends BaseInfoProperties {
         return GraceJSONResult.ok();
     }
 
+
+    // blockHandler 函数，原方法调用被限流/降级/系统保护的时候调用
+    // 参数需要一致
+    public GraceJSONResult blockForResumeRefresh(String resumeId,
+                                                 String userId,
+                                                 BlockException ex) {
+        return GraceJSONResult.errorMsg("刷新失败~，请稍后再试~!");
+    }
+
+    // 降级的兜底
+    // 异常 -> 降级
+    public GraceJSONResult fallbackForResumeRefresh(String resumeId,
+                                                    String userId) {
+        String today = LocalDateUtils.getLocalDateStr();
+        redis.increment(USER_ALREADY_REFRESHED_COUNTS + ":" + today + ":" + userId, 1);
+        return GraceJSONResult.ok("刷新成功~~");
+    }
     /**
      * 刷新简历
      * @param resumeId
      * @param userId
      * @return
      */
+    @SentinelResource(value = "test/refresh", // 资源名称
+            blockHandler = "blockForResumeRefresh",
+            fallback = "fallbackForResumeRefresh"
+    )
     @PostMapping("refresh")
     public GraceJSONResult refresh(String resumeId, String userId) {
 
         if (StringUtils.isBlank(resumeId) || StringUtils.isBlank(userId)) {
             return GraceJSONResult.error();
         }
+
+        //int a = 1 / 0;
 
         // 查询最大允许刷新的参数（写死为3，后续会改为其他的中间件）
         //int maxResumeRefreshCounts = 3;

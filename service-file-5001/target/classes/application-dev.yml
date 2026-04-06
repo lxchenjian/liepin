@@ -3,6 +3,13 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.10.9:8848
+  zipkin:
+    base-url: http://192.168.1.123:9411/
+    sender:
+      type: web # sleuth 和 zipkin通信
+  sleuth:
+    sampler:
+      probability: 1.0 # 生产 0.1～0.5 压力会大
 
 # MinIO 配置
 minio:
@@ -19,3 +26,19 @@ oss:
   bucketName: imooc-hire-dev                                      # 存储桶bucket名称
   accessKeyId: LAAI4GBSPQFYoMxZDX9MGbrB                           # OSS 秘钥信息
   accessKeySecret: VpUi2dDDWAkI0RFEmQReDWAyWAiZHB                 # OSS 秘钥信息
+
+zookeeper:
+  curator:
+    #    host: 192.168.1.121:2181,192.168.1.122:2181,192.168.1.123:2181
+    host: 192.168.10.9:2181
+    connectionTimeoutMs: 30000
+    sessionTimeoutMs: 3000
+    sleepMsBetweenRetry: 2000
+    maxRetries: 3
+    namespace: curator-imooc # 懒加载
+
+# sleuth
+logging:
+  level:
+    org.springframework.cloud.openfeign: debug
+    org.springframework.cloud.sleuth: debug

@@ -1,9 +1,13 @@
 com/liepin/service/impl/CompanyServiceImpl.class
+com/liepin/service/impl/TraderOrdersServiceImpl.class
 com/liepin/mapper/CompanyMapperCustom.class
 com/liepin/CompanyApplication.class
 com/liepin/mapper/CompanyMapper.class
+com/liepin/service/TraderOrdersService.class
 com/liepin/mapper/CompanyPhotoMapper.class
 com/liepin/controller/HelloController.class
+com/liepin/mapper/OrdersMapper.class
 com/liepin/service/impl/CompanyServiceImpl$1.class
 com/liepin/controller/CompanyController.class
+com/liepin/controller/TraderOrderController.class
 com/liepin/service/CompanyService.class

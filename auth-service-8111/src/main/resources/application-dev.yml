@@ -27,6 +27,14 @@ spring:
     password: admin
     publisher-confirm-type: correlated
     publisher-returns: true
+  zipkin:
+    base-url: http://192.168.1.123:9411/
+    sender:
+      type: web # sleuth 和 zipkin通信
+  sleuth:
+    sampler:
+      probability: 1.0 # 生产 0.1～0.5 压力会大
+
 # 1.5版本
 seata:
   enabled: true
@@ -56,3 +64,9 @@ zookeeper:
     sleepMsBetweenRetry: 2000
     maxRetries: 3
     namespace: curator-imooc # 懒加载
+
+# sleuth
+logging:
+  level:
+    org.springframework.cloud.openfeign: debug
+    org.springframework.cloud.sleuth: debug

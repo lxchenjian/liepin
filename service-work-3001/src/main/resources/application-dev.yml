@@ -18,6 +18,10 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.10.9:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080   # 控制面板的地址
+        port: 8719
   rabbitmq:
     host: 192.168.10.9
     port: 5672
@@ -31,6 +35,14 @@ spring:
     mongodb:
       uri: mongodb://imooc:imooc@192.168.10.9:27017
       database: imooc-hire-dev
+  zipkin:
+    base-url: http://192.168.1.123:9411/
+    sender:
+      type: web # sleuth 和 zipkin通信
+  sleuth:
+    sampler:
+      probability: 1.0 # 生产 0.1～0.5 压力会大
+
 jasypt:
   encryptor:
     algorithm: PBEWithMD5AndDES
@@ -61,12 +73,6 @@ canal:
   user-name: canal
   password: canal
 
-# 禁止canal的日志
-# 消息中如果有null，是因为实体类的字段名称和数据库不匹配
-logging:
-  level:
-    top.javatool.canal.client: warn
-
   # 1.5 增加了序列化机制
 #  client:
 #    undo:
@@ -81,3 +87,20 @@ zookeeper:
     sleepMsBetweenRetry: 2000
     maxRetries: 3
     namespace: curator-imooc # 懒加载
+
+# 暴露 actuator 的url / sentinel 控制台的实时监控 开关
+management:
+  endpoint:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# 禁止canal的日志
+# 消息中如果有null，是因为实体类的字段名称和数据库不匹配
+# sleuth 查看日志链路
+logging:
+  level:
+    top.javatool.canal.client: warn
+    org.springframework.cloud.openfeign: debug
+    org.springframework.cloud.sleuth: debug

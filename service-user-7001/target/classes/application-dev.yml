@@ -21,6 +21,13 @@ spring:
     loadbalancer:
       nacos:
         enabled: true   # 开启基于nacos规则的负载均衡
+  zipkin:
+    base-url: http://192.168.1.123:9411/
+    sender:
+      type: web # sleuth 和 zipkin通信
+  sleuth:
+    sampler:
+      probability: 1.0 # 生产 0.1～0.5 压力会大
 
 #        IRule
 #        return new NacosRule(); 老版本
@@ -44,3 +51,18 @@ seata:
       server-addr: 192.168.10.9:8848
       username: nacos
       password: nacos
+zookeeper:
+  curator:
+    #    host: 192.168.1.121:2181,192.168.1.122:2181,192.168.1.123:2181
+    host: 192.168.10.9:2181
+    connectionTimeoutMs: 30000
+    sessionTimeoutMs: 3000
+    sleepMsBetweenRetry: 2000
+    maxRetries: 3
+    namespace: curator-imooc # 懒加载
+
+# sleuth
+logging:
+  level:
+    org.springframework.cloud.openfeign: debug
+    org.springframework.cloud.sleuth: debug

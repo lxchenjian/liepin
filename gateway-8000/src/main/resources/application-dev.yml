@@ -8,6 +8,10 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.10.9:8848
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8080
     gateway:
       discovery:
         locator:
@@ -48,3 +52,16 @@ spring:
     loadbalancer:
       nacos:
         enabled: true   # 开启基于nacos规则的负载均衡(1、nacos页面修改权重) 写在调用方
+  zipkin:
+    base-url: http://192.168.1.123:9411/
+    sender:
+      type: web # sleuth 和 zipkin通信
+  sleuth:
+    sampler:
+      probability: 1.0 # 生产 0.1～0.5 压力会大
+
+# sleuth
+logging:
+  level:
+    org.springframework.cloud.openfeign: debug
+    org.springframework.cloud.sleuth: debug

@@ -109,13 +109,13 @@ public enum ResponseStatusEnum {
     JWT_SIGNATURE_ERROR(5555, false, "用户校验失败，请重新登录！"),
     JWT_EXPIRE_ERROR(5556, false, "登录有效期已过，请重新登录！"),
 
+    SENTINEL_BLOCK_FLOW_LIMIT_ERROR(5801, false, "系统访问繁忙，请稍后再试！"),
+
     // 支付错误相关代码
     PAYMENT_USER_INFO_ERROR(5901, false, "用户id或密码不正确！"),
     PAYMENT_ACCOUT_EXPIRE_ERROR(5902, false, "该账户授权访问日期已失效！"),
     PAYMENT_HEADERS_ERROR(5903, false, "请在header中携带支付中心所需的用户id以及密码！"),
     PAYMENT_ORDER_CREATE_ERROR(5904, false, "支付中心订单创建失败，请联系管理员！"),
-
-
 
     // admin 相关错误代码
     ADMIN_NOT_EXIST(5101, false, "管理员不存在！");
