@@ -6,6 +6,7 @@ import com.liepin.feign.CompanyMicroServiceFeign;
 import com.liepin.feign.UserInfoMicroServiceFeign;
 import com.liepin.base.BaseInfoProperties;
 import com.liepin.enums.JobStatus;
+import com.liepin.feign.CompanyMicroServiceFeign;
 import com.liepin.grace.result.GraceJSONResult;
 import com.liepin.mapper.JobMapper;
 import com.liepin.pojo.Job;
@@ -18,7 +19,6 @@ import com.liepin.pojo.vo.UsersVO;
 import com.liepin.service.JobService;
 import com.liepin.utils.GsonUtils;
 import com.liepin.utils.PagedGridResult;
-import com.liepin.feign.UserInfoMicroServiceFeign;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +63,8 @@ public class JobServiceImpl extends BaseInfoProperties implements JobService {
             job.setStatus(JobStatus.OPEN.type);
             job.setCreateTime(LocalDateTime.now());
             jobMapper.insert(job);
+
+            redis.increment(HR_ALL_JOB_COUNTS + ":" + editJobBO.getHrId(), 1);
         } else {
             // 修改
             jobMapper.update(job, new QueryWrapper<Job>()
@@ -163,6 +165,10 @@ public class JobServiceImpl extends BaseInfoProperties implements JobService {
                 ":" + hrId +
                 ":" + jobId
         );
+
+        if (jobStatus.type == JobStatus.DELETE.type) {
+            redis.decrement(HR_ALL_JOB_COUNTS + ":" + hrId, 1);
+        }
     }
 
     @Override
@@ -192,13 +198,10 @@ public class JobServiceImpl extends BaseInfoProperties implements JobService {
         if (StringUtils.isNotBlank(city)) {
             queryWrapper.like("city", city);
         }
-        //求职开始  职位开始  职位结束  求职结束
+
         if (beginSalary > 0 && endSalary > 0) {
 //            queryWrapper.ge("end_salary", beginSalary);
             // 优化薪资区间的查询
-
-           // ( 求职开始<=职位开始&&求职结束<=职位开始)||( 求职开始<=职位开始&&求职结束<=职位开始)
-
             queryWrapper.and(
                     qw -> qw.or(
                             // 职位最低薪资begin <= 求职薪资begin <= 职位最高薪资end
@@ -274,5 +277,71 @@ public class JobServiceImpl extends BaseInfoProperties implements JobService {
         gridResult.setRows(jobsVOList);
 
         return gridResult;
+    }
+
+    @Override
+    public List<SearchJobsVO> searchCollectJobs(List<String> jobIdList) {
+
+        List<SearchJobsVO> jobsVOList = new ArrayList<>();
+        if (jobIdList.isEmpty()) {
+            return jobsVOList;
+        }
+
+        QueryWrapper queryWrapper = new QueryWrapper<Job>()
+                .eq("status", JobStatus.OPEN.type)
+                .in("id", jobIdList);
+
+        List<Job> jobList = jobMapper.selectList(queryWrapper);
+
+        return getConvertJobsList(jobList);
+    }
+
+    private List<SearchJobsVO> getConvertJobsList(List<Job> jobList) {
+        // 根据每个job中的企业id，去获得企业信息
+        List<String> companyIds = new ArrayList<>();
+        // 根据每个job中的hrid，去获得hr用户信息
+        List<String> hrIds = new ArrayList<>();
+
+        // 构建VO对象，用户返回给前端
+        List<SearchJobsVO> jobsVOList = new ArrayList<>();
+        for (Job j : jobList) {
+            hrIds.add(j.getHrId());
+            companyIds.add(j.getCompanyId());
+
+            SearchJobsVO searchJobsVO = new SearchJobsVO();
+            BeanUtils.copyProperties(j, searchJobsVO);
+            jobsVOList.add(searchJobsVO);
+        }
+
+        // 远程调用查询并且拼接hr用户信息
+        SearchBO searchBO = new SearchBO();
+        searchBO.setUserIds(hrIds);
+        GraceJSONResult userResult = userInfoMicroServiceFeign.getList(searchBO);
+        String userListStr = (String)userResult.getData();
+        List<UsersVO> hrUsersList = GsonUtils.stringToListAnother(userListStr, UsersVO.class);
+
+        for (SearchJobsVO j : jobsVOList) {
+            for (UsersVO u : hrUsersList) {
+                if (j.getHrId().equals(u.getId())) {
+                    j.setUsersVO(u);
+                }
+            }
+        }
+
+        // 远程调用查询并且拼接企业信息
+        searchBO.setCompanyIds(companyIds);
+        GraceJSONResult companyResult = companyMicroServiceFeign.getList(searchBO);
+        String companyListStr = (String)companyResult.getData();
+        List<CompanyInfoVO> companyInfoVOList = GsonUtils.stringToListAnother(companyListStr, CompanyInfoVO.class);
+
+        for (SearchJobsVO j : jobsVOList) {
+            for (CompanyInfoVO c : companyInfoVOList) {
+                if (j.getCompanyId().equals(c.getCompanyId())) {
+                    j.setCompanyInfoVO(c);
+                }
+            }
+        }
+
+        return jobsVOList;
     }
 }

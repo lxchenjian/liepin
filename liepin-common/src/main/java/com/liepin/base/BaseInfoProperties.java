@@ -1,22 +1,13 @@
 package com.liepin.base;
 
 import com.github.pagehelper.PageInfo;
-import com.google.gson.Gson;
-import com.liepin.grace.result.GraceJSONResult;
-import com.liepin.grace.result.ResponseStatusEnum;
 import com.liepin.utils.PagedGridResult;
 import com.liepin.utils.RedisOperator;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.util.MimeTypeUtils;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class BaseInfoProperties {
@@ -122,19 +113,18 @@ public class BaseInfoProperties {
     public static final String REDIS_USER_LIKE_VLOG = "redis_user_like_vlog";
 
 
-    // 支付中心地址 - 创建商户订单  尝试ip是否能ping通，端口是否能通
-    // 测试订单是否建立成功 http://payment.t.mukewang.com:9060/payment/getMerchantOrderInfo?merchantOrderId=
+    // 支付中心地址 - 创建商户订单
 //    public static final String PAYMENT_URL_CREATE_MERCHANT_ORDER = "http://192.168.1.6:9060/payment/createMerchantOrder";		// dev
-    public static final String PAYMENT_URL_CREATE_MERCHANT_ORDER = "http://172.17.172.127:9060/payment/createMerchantOrder";		// prod
-    //    String PAYMENT_URL_CREATE_MERCHANT_ORDER = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";		// produce
+    public static final String PAYMENT_URL_CREATE_MERCHANT_ORDER = "http://hirecompany.t.mukewang.com:9060/payment/createMerchantOrder";		// prod
+//    String PAYMENT_URL_CREATE_MERCHANT_ORDER = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";		// produce
     // 支付中心地址 - 获得微信支付二维码
 //    public static final String PAYMENT_URL_GET_WXPAY_QRCODE = "http://192.168.1.6:9060/payment/getWXPayQRCode";		// dev
-    public static final String PAYMENT_URL_GET_WXPAY_QRCODE = "http://172.17.172.127:9060/payment/getWXPayQRCode";		// prod
+    public static final String PAYMENT_URL_GET_WXPAY_QRCODE = "http://hirecompany.t.mukewang.com:9060/payment/getWXPayQRCode";		// prod
 //    String PAYMENT_URL_GET_WXPAY_QRCODE = "http://payment.t.mukewang.com/foodie-payment/payment/getWXPayQRCode";		// produce
 
-    // 慕聘网 - 支付后的回调通知api接口地址
-//    public static final String PAY_RETURN_URL = "http://192.168.1.6:6001/tradeOrder/notifyMerchantOrderPaid";             // dev
-    public static final String PAY_RETURN_URL = "http://172.17.172.127:6001/tradeOrder/notifyMerchantOrderPaid";             // prod
+    // 慕聘网 - 支付后的回调通知api接口地址(慕聘网项目的暴露接口请求地址)
+    public static final String PAY_RETURN_URL = "http://z58y37.natappfree.cc/tradeOrder/notifyMerchantOrderPaid";             // dev
+    //public static final String PAY_RETURN_URL = "http://192.168.1.5:6001/tradeOrder/notifyMerchantOrderPaid";             // prod
 //    public static final String PAY_RETURN_URL = "http://api.t.mukewang.com/foodie-api/tradeOrder/notifyMerchantOrderPaid";        // prod
 
 
@@ -172,6 +162,14 @@ public class BaseInfoProperties {
         headers.add("imoocUserId", "test");
         headers.add("password", "test");
         return headers;
+    }
+
+    public Integer getCountsConvent(String redisCountsKey) {
+        String countsStr = redis.get(redisCountsKey);
+        if (StringUtils.isNotBlank(countsStr)) {
+            return Integer.valueOf(countsStr);
+        }
+        return 0;
     }
 
 }

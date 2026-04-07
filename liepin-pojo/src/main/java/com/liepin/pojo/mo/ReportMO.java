@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Document("report_job") // mongodb
+@Document("report_job")
 public class ReportMO {
 
     @Id

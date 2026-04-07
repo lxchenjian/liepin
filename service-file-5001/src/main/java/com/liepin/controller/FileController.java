@@ -7,7 +7,6 @@ import com.liepin.grace.result.GraceJSONResult;
 import com.liepin.grace.result.ResponseStatusEnum;
 import com.liepin.pojo.bo.Base64FileBO;
 import com.liepin.utils.Base64ToFile;
-import com.liepin.grace.result.GraceJSONResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +24,14 @@ import java.util.UUID;
 public class FileController {
 
     //    www.imooc-hire.com
-    public static final String host = "http://192.168.10.9:8000/";
+    public static final String host = "http://192.168.1.6:8000/";
 
     @GetMapping("hello")
     public Object hello() {
         return "Hello File Service~~~";
     }
 
-    @PostMapping("uploadFace")
+    @PostMapping("uploadFace1")
     public GraceJSONResult uploadFace1(@RequestParam("file") MultipartFile file,
                                        @RequestParam("userId") String userId,
                                        HttpServletRequest request) throws Exception {
@@ -48,21 +47,20 @@ public class FileController {
         String newFileName = userId + suffixName;
 
         // 设置文件存储的路径，可以存放在指定的路径中，windows用户需要修改为对应的盘符
-        String rootPath = "/users/xingma/desktop/temp" ;//+ File.separator
+        String rootPath = "/temp" + File.separator;
         // 图片存储的完全路径
         String filePath = rootPath + File.separator + "face" + File.separator + newFileName;
 
         File newFile = new File(filePath);
         if (!newFile.getParentFile().exists()) {
             // 如果目标文件所在目录不存在，则创建父目录
-            // 这里在mac没有权限不会抛出异常，会返回false
             newFile.getParentFile().mkdirs();
         }
 
         // 将内存中的文件数据写入到磁盘
         file.transferTo(newFile);
 
-        // 生成web可以被访问的url地址  ----  静态映射：StaticResourceConfig
+        // 生成web可以被访问的url地址
         String userFaceUrl = host + "static/face/" + newFileName;
 
         return GraceJSONResult.ok(userFaceUrl);
@@ -71,7 +69,7 @@ public class FileController {
     @Autowired
     private MinIOConfig minIOConfig;
 
-    @PostMapping("uploadFace1")
+    @PostMapping("uploadFace")
     public GraceJSONResult uploadFace(@RequestParam("file") MultipartFile file,
                                       @RequestParam("userId") String userId) throws Exception {
 
@@ -102,7 +100,7 @@ public class FileController {
         // 获得文件原始名称
         String filename = file.getOriginalFilename();
 
-        filename = userId + File.separator + dealFilename(filename);
+        filename = userId + File.separator + filename;
         String imageUrl = OSSUtils.uploadFile(file, filename);
 
         return GraceJSONResult.ok(imageUrl);
@@ -137,12 +135,6 @@ public class FileController {
         return GraceJSONResult.ok(imageUrl);
     }
 
-    /**
-     * 上传企业logo
-     * @param file
-     * @return
-     * @throws Exception
-     */
     @PostMapping("uploadLogo")
     public GraceJSONResult uploadLogo(@RequestParam("file") MultipartFile file) throws Exception {
 
@@ -162,12 +154,6 @@ public class FileController {
         return GraceJSONResult.ok(imageUrl);
     }
 
-    /**
-     * 上传营业职照
-     * @param file
-     * @return
-     * @throws Exception
-     */
     @PostMapping("uploadBizLicense")
     public GraceJSONResult uploadBizLicense(@RequestParam("file") MultipartFile file) throws Exception {
 
@@ -184,7 +170,6 @@ public class FileController {
                                                 true);
         return GraceJSONResult.ok(imageUrl);
     }
-
 
     @PostMapping("uploadAuthLetter")
     public GraceJSONResult uploadAuthLetter(@RequestParam("file") MultipartFile file) throws Exception {
@@ -225,6 +210,23 @@ public class FileController {
         }
 
         return GraceJSONResult.ok(fileList);
+    }
+
+    @PostMapping("uploadArticleCover")
+    public GraceJSONResult uploadArticleCover(@RequestParam("file") MultipartFile file) throws Exception {
+
+        // 获得文件原始名称
+        String filename = file.getOriginalFilename();
+        if (StringUtils.isBlank(filename)) {
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_NULL_ERROR);
+        }
+
+        filename = "article/covers/" + dealFilename(filename);
+        String imageUrl = MinIOUtils.uploadFile(minIOConfig.getBucketName(),
+                filename,
+                file.getInputStream(),
+                true);
+        return GraceJSONResult.ok(imageUrl);
     }
 
     private String dealFilename(String filename) {

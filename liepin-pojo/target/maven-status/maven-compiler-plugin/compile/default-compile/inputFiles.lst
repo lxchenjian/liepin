@@ -13,6 +13,7 @@
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/Resume.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/vo/AdminVO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/ResumeWorkExp.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/eo/Stu.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/DataDictionaryBO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/ModifyCompanyInfoBO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/UserPassport.java
@@ -32,6 +33,7 @@
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/RegistLoginBO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/ReviewCompanyBO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/EditResumeExpectBO.java
+/Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/eo/SearchResumesEO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/bo/SearchReportJobBO.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/Job.java
 /Users/xingma/Desktop/project/newest_front/liepin/liepin-pojo/src/main/java/com/liepin/pojo/Admin.java

@@ -4,7 +4,10 @@ import com.liepin.enums.JobStatus;
 import com.liepin.pojo.Job;
 import com.liepin.pojo.bo.EditJobBO;
 import com.liepin.pojo.bo.SearchJobsBO;
+import com.liepin.pojo.vo.SearchJobsVO;
 import com.liepin.utils.PagedGridResult;
+
+import java.util.List;
 
 /**
  * <p>
@@ -62,10 +65,17 @@ public interface JobService {
      * 搜索职位
      * @param searchJobsBO
      * @param page
-     * @param limit
+     * @param pageSize
      * @return
      */
     public PagedGridResult searchJobs(SearchJobsBO searchJobsBO,
                                       Integer page,
                                       Integer pageSize);
+
+    /**
+     * 候选人搜索收藏的职位列表（根据id查询joblist）
+     * @param jobIdList
+     * @return
+     */
+    public List<SearchJobsVO> searchCollectJobs(List<String> jobIdList);
 }

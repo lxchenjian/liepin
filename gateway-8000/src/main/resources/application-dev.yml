@@ -29,7 +29,7 @@ spring:
         - id: authRoute
           uri: lb://auth-service
           predicates:
-            - Path=/a/**,/passport/**,/saas/**,/admin/**
+            - Path=/a/**,/passport/**,/saas/**,/admin/**,/article/**
         - id: resourceRoute
           uri: lb://resource-service
           predicates:

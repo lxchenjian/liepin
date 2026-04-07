@@ -1,9 +1,9 @@
 package com.liepin.pojo.bo;
 
-import com.liepin.exceptions.GraceException;
-import com.liepin.grace.result.ResponseStatusEnum;
-import com.liepin.pojo.ar.AdminAR;
-import com.liepin.utils.MD5Utils;
+import com.imooc.exceptions.GraceException;
+import com.imooc.grace.result.ResponseStatusEnum;
+import com.imooc.pojo.ar.AdminAR;
+import com.imooc.utils.MD5Utils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -11,12 +11,14 @@ com/liepin/pojo/Users.class
 com/liepin/pojo/Interview.class
 com/liepin/pojo/bo/ResetPwdBO.class
 com/liepin/pojo/vo/SearchResumesVO.class
+com/liepin/pojo/eo/Stu.class
 com/liepin/pojo/co/SysParamsCO.class
 com/liepin/pojo/vo/UsersVO.class
 com/liepin/pojo/JobType.class
 com/liepin/pojo/bo/CreateAdminBO.class
 com/liepin/pojo/vo/TopIndustryWithThirdListVO.class
 com/liepin/pojo/bo/SearchReportJobBO.class
+com/liepin/pojo/eo/SearchResumesEO.class
 com/liepin/pojo/test/Stu.class
 com/liepin/pojo/bo/EditResumeBO.class
 com/liepin/pojo/mq/SMSContentQO.class

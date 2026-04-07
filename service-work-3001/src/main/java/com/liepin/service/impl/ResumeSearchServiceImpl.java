@@ -15,8 +15,8 @@ import com.liepin.utils.JsonUtils;
 import com.liepin.utils.LocalDateUtils;
 import com.liepin.utils.PagedGridResult;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.BooleanQuery;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +25,10 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
-import org.springframework.data.elasticsearch.core.query.*;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -121,7 +124,6 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
             resumesEO.setEndSalary(resumeExpect.getEndSalary());
 
             IndexQuery iq = new IndexQueryBuilder().withObject(resumesEO).build();
-            // save and update
             esTemplate.index(iq, IndexCoordinates.of("resume_result"));
         }
 
@@ -291,5 +293,30 @@ public class ResumeSearchServiceImpl implements ResumeSearchService {
             list.add(res);
         }
         return list;
+    }
+
+    @Override
+    public List<SearchResumesEO> searchCollectResumes(List<String> ids) {
+
+        List<SearchResumesEO> resumesEOList = new ArrayList<>();
+        if (ids.isEmpty()) {
+            return resumesEOList;
+        }
+
+        IdsQueryBuilder queryBuilder = new IdsQueryBuilder();
+        for (String id : ids) {
+            queryBuilder.addIds(id);
+        }
+
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.should(queryBuilder);
+
+        Query query = new NativeSearchQueryBuilder()
+                .withQuery(boolQueryBuilder)
+                .build();
+
+        SearchHits<SearchResumesEO> searchHits = esTemplate.search(query, SearchResumesEO.class);
+
+        return getList(searchHits, SearchResumesEO.class);
     }
 }

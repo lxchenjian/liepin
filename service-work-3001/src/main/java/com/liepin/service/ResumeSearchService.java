@@ -1,7 +1,10 @@
 package com.liepin.service;
 
 import com.liepin.pojo.bo.SearchResumesBO;
+import com.liepin.pojo.eo.SearchResumesEO;
 import com.liepin.utils.PagedGridResult;
+
+import java.util.List;
 
 /**
  * 简历检索service
@@ -22,5 +25,12 @@ public interface ResumeSearchService {
     public PagedGridResult searchResumesByES(SearchResumesBO searchResumesBO,
                                              Integer page,
                                              Integer pageSize);
+
+    /**
+     * 根据ids检索es中的简历列表
+     * @param ids
+     * @return
+     */
+    public List<SearchResumesEO> searchCollectResumes(List<String> ids);
 
 }
