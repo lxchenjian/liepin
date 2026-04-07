@@ -1,0 +1,16 @@
+server:
+  port: ${port:2001}
+  tomcat:
+    uri-encoding: UTF-8
+    max-swallow-size: -1
+
+spring:
+  application:
+    name: es-service
+  profiles:
+    active: dev
+
+# 日志级别
+logging:
+  level:
+    root: info

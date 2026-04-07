@@ -1,0 +1,61 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.1.121:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080   # 控制面板的地址
+        port: 8719
+  redis:
+    host: 192.168.1.121
+    port: 6379
+    database: 0
+    password: imooc
+  rabbitmq:
+    host: 192.168.1.122
+    port: 5672
+    virtual-host: /
+    username: imooc
+    password: ENC(UnoiHtPp84zMjjwLoJe/Kg==)
+  zipkin:
+    base-url: http://192.168.1.123:9411/
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1.0
+  elasticsearch:
+    uris: http://192.168.10.9:9200
+# 老版本
+#  data:
+#    elasticsearch:
+#      cluster-name: imooc-es
+#      cluster-nodes: 192.168.1.123:9300
+
+#canal:
+#  destination: imooc
+#  server: 192.168.1.122:11111
+#  user-name: canal
+#  password: canal
+
+logging:
+  level:
+    top.javatool.canal.client: warn
+    org.springframework.cloud.openfeign: debug
+    org.springframework.cloud.sleuth: debug
+
+jasypt:
+  encryptor:
+    algorithm: PBEWithMD5AndDES
+    password: fengjianyingyue
+
+
+# 暴露actuator的url
+#management:
+#  endpoint:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+

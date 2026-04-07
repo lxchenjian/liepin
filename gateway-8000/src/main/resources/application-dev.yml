@@ -42,6 +42,10 @@ spring:
           uri: lb://file-service
           predicates:
             - Path=/file/**,/static/**
+        - id: esRoute
+          uri: lb://es-service
+          predicates:
+            - Path=/es/**
       globalcors:
         cors-configurations:
           '[/**]':

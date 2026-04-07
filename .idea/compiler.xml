@@ -20,6 +20,7 @@
         <module name="service-file-5001" />
         <module name="service-user-7001" />
         <module name="gateway-8000" />
+        <module name="service-es-2001" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -40,6 +41,7 @@
       <module name="rabbit-producer" options="-parameters" />
       <module name="server-resource-4001" options="-parameters" />
       <module name="service-company-6001" options="-parameters" />
+      <module name="service-es-2001" options="-parameters" />
       <module name="service-file-5001" options="-parameters" />
       <module name="service-user-7001" options="-parameters" />
       <module name="service-work-3001" options="-parameters" />

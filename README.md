@@ -787,3 +787,144 @@ Gateway 网关手动限流与自定义响应（17:35）
 Zipkin与Sleuth集成可视化（19:17）
 拓展：Zipkin 数据存储mysql（12:03）
 本章小节（03:27）
+
+# 第十八周 基于ES实战海量数据检索技能
+第1章 如何基于ES实战海量数据检索技能？
+Elasticsearch
+倒排索引
+Springboot整合版本
+Docker安装配置HEAD插件
+ES分词
+_mapping映射
+文档的CRUD
+match_all/term/match
+复杂多条件数据检索
+
+本章概述
+Elasticsearch 全文检索概述
+背景：HR搜索简历、求职者搜索职位
+优化：搜索不走数据库，走搜索引擎
+
+
+搜索引擎的倒排索引
+elasticsearch 下载与版本说明最近学习
+Docker 安装配置 elasticsearch
+安装 ES-Head 插件
+elasticsearch - 分词与内置分词器
+elasticsearch 使用IK中文分词器
+es整合-整合springboot，索引创建与删除
+es整合-为索引创建mappings并新增文档
+es整合-文档数据的修改
+es整合-文档数据查询与删除
+es实践-梳理简历索引field并创建
+1、建立索引
+resume_result
+
+2、创建映射
+{
+  "properties":{
+    "userId":{
+      "type":"text"
+    },
+    "resumeId":{
+      "type":"text"
+    },
+    "nickname":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "sex":{
+      "type":"integer"
+    },
+    "face":{
+      "type":"keyword"
+    },
+    "birthday":{ 
+      "type":"date",
+      "format":"yyyy-MM-dd"
+    },
+    "age":{
+      "type":"integer"
+    },
+    "companyName":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "position":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "industry":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "school":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "education":{
+      "type":"keyword"
+    },
+    "major":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "workYears":{
+      "type":"text"
+    },
+    "jobType":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "city":{
+      "type":"text"
+    },
+    "beginSalary":{
+      "type":"integer"
+    },
+    "endSalary":{
+      "type":"integer"
+    },
+    "skills":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "advantage":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "advantageHtml":{
+      "type":"text"
+    },
+    "credentials":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "jobStatus":{
+      "type":"keyword"
+    },
+    "refreshTime":{
+      "type":"date"
+      "format":"yyyy-MM-dd HH:mm:ss"
+    },
+    "hrCollectResumeTime":{
+      "type":"date"
+      "format":"yyyy-MM-dd HH:mm:ss"
+    },
+    "hrReadResumeTime":{
+      "type":"date"
+      "format":"yyyy-MM-dd HH:mm:ss"
+    }
+} 
+
+es实践-刷新简历存入es文档
+
+
+es实践-基于简历的3种搜索脚本
+
+
+
+es实践-整合实现match_all搜索
+es实践-整合实现term与match搜索
+es实践-整合es进行简历复杂搜索
+本章小节

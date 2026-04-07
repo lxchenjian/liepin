@@ -21,6 +21,7 @@
         <module>service-work-3001</module>
         <module>service-file-5001</module>
         <module>payment-center-9060</module>
+        <module>service-es-2001</module>
 
 
     </modules>

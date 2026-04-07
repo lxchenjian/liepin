@@ -14,6 +14,7 @@ import com.liepin.pojo.ResumeProjectExp;
 import com.liepin.pojo.ResumeWorkExp;
 import com.liepin.pojo.bo.*;
 import com.liepin.pojo.vo.ResumeVO;
+import com.liepin.service.ResumeSearchService;
 import com.liepin.service.ResumeService;
 import com.liepin.utils.GsonUtils;
 import com.liepin.utils.LocalDateUtils;
@@ -36,6 +37,9 @@ public class ResumeController extends BaseInfoProperties {
 
     @Autowired
     private Cache<String, Integer> resumeRefreshCountsCache;
+
+    @Autowired
+    private ResumeSearchService resumeSearchService;
 
     /**
      * 初始化用户简历
@@ -373,6 +377,7 @@ public class ResumeController extends BaseInfoProperties {
         } else {
             return GraceJSONResult.errorCustom(ResponseStatusEnum.RESUME_MAX_LIMIT_ERROR);
         }
+        resumeSearchService.transformAndFlush(userId);
 
         return GraceJSONResult.ok();
     }
@@ -399,9 +404,18 @@ public class ResumeController extends BaseInfoProperties {
         List<String> eduList = EduEnum.getEduList(eduIndex);
         searchResumesBO.setEduList(eduList);
 
-        PagedGridResult gridResult = resumeService.searchResumes(searchResumesBO,
-                                                                page,
-                                                                limit);
+        //PagedGridResult gridResult = resumeService.searchResumes(searchResumesBO,
+        //        page,
+        //        limit);
+
+        PagedGridResult gridResult = resumeSearchService.searchResumesByES(
+                searchResumesBO,
+                page,
+                limit);
+
+        // 改写为elasticSearch
+        // 1、新建索引
+        // 2、新建mapping
 
         return GraceJSONResult.ok(gridResult);
     }
