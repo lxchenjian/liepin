@@ -45,7 +45,7 @@ spring:
         - id: esRoute
           uri: lb://es-service
           predicates:
-            - Path=/es/**
+            - Path=/es/**,/aggs/**
       globalcors:
         cors-configurations:
           '[/**]':

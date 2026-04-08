@@ -958,3 +958,74 @@ HR的职位总数统计
 收藏与移除职位
 收藏职位的总数与列表查询
 本章小节
+
+# 第二十周 主流图表数据可视化技术实战
+第1章 主流图表数据可视化技术实战
+数据可视化
+elasticsearch aggs聚合统计(折线图、地图区域、雷达图、饼状图、柱状图)
+zipkin+mq+es
+elk——日志收集
+
+本章概述
+数据可视化业务分析与es索引创建
+创建新索引： aggs_user
+创建映射：
+{
+  "properties":{
+    "type":{
+      "type":"integer"
+    },
+    "userId":{
+      "type":"keyword"
+    },
+    "companyId":{
+      "type":"keyword"
+    },
+    "resumeId":{
+      "type":"keyword"
+    },
+    "face":{
+      "type":"keyword"
+    },
+    "nickname":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "sex":{
+      "type":"integer"
+    },
+    "province":{
+      "type":"keyword"
+    },
+    "industry":{
+      "type":"keyword"
+    },
+    "companyName":{
+      "type":"text",
+      "analyzer":"ik_max_word"
+    },
+    "createDate":{
+      "type":"text",
+      "format":"yyyy_MM_dd"
+    },
+
+  }
+}
+
+es中新增聚合统计的用户记录
+aggs统计聚合-terms与date_histogram折线图
+aggs统计聚合-地图区域与雷达图脚本
+aggs统计聚合-比例饼状图与柱状图
+es进阶-统计不同类型用户总数
+es进阶-统计日期区间折线图
+es进阶-地图区域可视化统计
+es进阶-雷达图统计多行业从业人数
+es进阶-饼状图行业男女比例
+es进阶-柱状图每日投递简历数与男女比例
+Zipkin结合RabbitMQ存储日志到Elasticsearch
+
+
+ELK-ELK模型与日志采集
+ELK-Docker安装配置Kibana
+ELK-安装配置Logstash整合Logback
+本章小结

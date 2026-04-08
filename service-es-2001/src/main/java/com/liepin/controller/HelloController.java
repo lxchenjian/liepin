@@ -3,6 +3,7 @@ package com.liepin.controller;
 import com.liepin.grace.result.GraceJSONResult;
 import com.liepin.pojo.eo.SearchResumesEO;
 import com.liepin.pojo.eo.Stu;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("es")
 public class HelloController {
@@ -32,7 +34,13 @@ public class HelloController {
 
     @GetMapping("hello")
     public Object hello() {
-        return "Hello Elasticsearch~~~";
+
+        log.debug("测试 logstash 慕聘网。。。 debugger");
+        log.info("测试 logstash 慕聘网。。。 info");
+        log.warn("测试 logstash 慕聘网。。。 warn");
+        log.error("测试 logstash 慕聘网。。。 error");
+
+        return GraceJSONResult.ok();
     }
 
     @GetMapping("createIndex")

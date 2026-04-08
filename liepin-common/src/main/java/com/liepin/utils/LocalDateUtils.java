@@ -48,6 +48,10 @@ public class LocalDateUtils {
      */
     public static final String UNSIGNED_DATE_PATTERN = "yyyyMMdd";
 
+    public static final String DATE_DAY_PATTERN_SHORT = "MM-dd";
+
+    public static final String YEAR_DATE_PATTERN = "yyyy";
+
     /**
      * 春天;
      */
@@ -150,7 +154,7 @@ public class LocalDateUtils {
     /**
      * 获取当前日期字符串.
      *
-     * @return String 日期字符串，例如2015-08-11
+     * @return String 日期字符串，例如2023-12-25
      */
     public static String getLocalDateStr() {
         return format(LocalDate.now(), DATE_PATTERN);
@@ -294,6 +298,18 @@ public class LocalDateUtils {
      */
     public static String getLastDayOfYearStr() {
         return getLastDayOfYearStr(LocalDateTime.now());
+    }
+
+    /**
+     * 获得今天的日期
+     * @return
+     */
+    public static String getTodayStr() {
+        return format(LocalDate.now(), DATE_PATTERN);
+    }
+
+    public static String getTodayStr(String pattern) {
+        return format(LocalDate.now(), pattern);
     }
 
     /**
