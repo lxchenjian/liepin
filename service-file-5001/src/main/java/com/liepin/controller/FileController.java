@@ -3,10 +3,13 @@ package com.liepin.controller;
 import com.liepin.MinIOConfig;
 import com.liepin.MinIOUtils;
 import com.liepin.OSSUtils;
+import com.liepin.exceptions.GraceException;
 import com.liepin.grace.result.GraceJSONResult;
 import com.liepin.grace.result.ResponseStatusEnum;
 import com.liepin.pojo.bo.Base64FileBO;
+import com.liepin.pojo.vo.VideoMsgVO;
 import com.liepin.utils.Base64ToFile;
+import com.liepin.utils.VideoUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -227,6 +231,94 @@ public class FileController {
                 file.getInputStream(),
                 true);
         return GraceJSONResult.ok(imageUrl);
+    }
+
+    @PostMapping("uploadChatPhoto")
+    public GraceJSONResult uploadChatPhoto(@RequestParam("file") MultipartFile file, String userId) throws Exception {
+
+        // 获得文件原始名称
+        //String filename = file.getOriginalFilename();
+        //if (StringUtils.isBlank(filename)) {
+        //    return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_NULL_ERROR);
+        //}
+        //
+        //filename = "chat/" + userId + "/photo/" + dealFilename(filename);
+        //String imageUrl = MinIOUtils.uploadFile(minIOConfig.getBucketName(),
+        //        filename,
+        //        file.getInputStream(),
+        //        true);
+
+        String imageUrl = uploadForChatFiles(file, userId, "photo");
+        return GraceJSONResult.ok(imageUrl);
+    }
+
+    @PostMapping("uploadChatVideo")
+    public GraceJSONResult uploadChatVideo(@RequestParam("file") MultipartFile file, String userId) throws Exception {
+
+        // 获得文件原始名称
+        String filename = file.getOriginalFilename();
+        if (StringUtils.isBlank(filename)) {
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_NULL_ERROR);
+        }
+
+        filename = "chat/" + userId + "/video/" + dealFilename(filename);
+        String videoUrl = MinIOUtils.uploadFile(minIOConfig.getBucketName(),
+                filename,
+                file.getInputStream(),
+                true);
+
+        // 获得封面原理：通过使用ffmpeg截帧，获取第一帧
+        String coverName = UUID.randomUUID().toString() + ".jpg";
+        String coverPath = VideoUtil.videoFramesPath
+                + File.separator + "videos"
+                + File.separator + coverName;
+
+        File coverFile = new File(coverPath);
+        // 判断目标文件所在目录是否存在
+        if (!coverFile.getParentFile().exists()) {
+            // /tmp/abc/123/xyz.jpg 如果目标文件所在目录不存在，则创建父目录
+            coverFile.getParentFile().mkdirs();
+        }
+
+        // 获得第一帧
+        byte[] b = VideoUtil.getVideoFirstFrame(videoUrl);
+        // 输出到本地文件
+        VideoUtil.ByteToFile(b, coverPath);
+
+        // 通过File的inputStream上传到minio
+        String coverUrl = MinIOUtils.uploadFile(minIOConfig.getBucketName(),
+                coverName,
+                new FileInputStream(coverFile),
+                true);
+
+        VideoMsgVO videoMsgVO = new VideoMsgVO();
+        videoMsgVO.setVideoPath(videoUrl);
+        videoMsgVO.setCover(coverUrl);
+
+        return GraceJSONResult.ok(videoMsgVO);
+    }
+
+    @PostMapping("uploadChatVoice")
+    public GraceJSONResult uploadChatVoice(@RequestParam("file") MultipartFile file, String userId) throws Exception {
+        String voiceUrl = uploadForChatFiles(file, userId, "voice");
+        return GraceJSONResult.ok(voiceUrl);
+    }
+
+    private String uploadForChatFiles(MultipartFile file,
+                                      String userId,
+                                      String fileType) throws Exception {
+        // 获得文件原始名称
+        String filename = file.getOriginalFilename();
+        if (StringUtils.isBlank(filename)) {
+            GraceException.display(ResponseStatusEnum.FILE_UPLOAD_NULL_ERROR);
+        }
+
+        filename = "chat/" + userId + "/" + fileType + "/" + dealFilename(filename);
+        String fileUrl = MinIOUtils.uploadFile(minIOConfig.getBucketName(),
+                filename,
+                file.getInputStream(),
+                true);
+        return fileUrl;
     }
 
     private String dealFilename(String filename) {

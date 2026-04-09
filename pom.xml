@@ -22,8 +22,7 @@
         <module>service-file-5001</module>
         <module>payment-center-9060</module>
         <module>service-es-2001</module>
-
-
+        <module>chat-server-875</module>
     </modules>
 
 

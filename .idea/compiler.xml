@@ -10,6 +10,7 @@
         <module name="server-resource-4001" />
         <module name="liepin-common" />
         <module name="service-work-3001" />
+        <module name="chat-server-875" />
         <module name="rabbit-consumer" />
         <module name="service-company-6001" />
         <module name="liepin-pojo" />
@@ -31,6 +32,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth-service-8111" options="-parameters" />
+      <module name="chat-server-875" options="-parameters" />
       <module name="gateway-8000" options="-parameters" />
       <module name="liepin" options="-parameters" />
       <module name="liepin-api" options="-parameters" />
